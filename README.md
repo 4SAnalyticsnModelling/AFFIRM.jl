@@ -13,3 +13,15 @@ using AFFIRM;
 cd("your/project/folder");
 AFFIRM.create_affirm();
 ```
+## AFFIRM folder structure and inputs
+AFFIRM.jl folder structure
+```
+> data
+> input
+  - AFFIRM-batch-inputs.csv
+> output
+> src
+  - runAFFIRM.jl
+```
+***Do not change any folder or file names***
+Understanding ```AFFIRM-batch-inputs.csv``` file
