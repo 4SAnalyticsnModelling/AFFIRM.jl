@@ -24,4 +24,4 @@ AFFIRM.jl folder structure
   - runAFFIRM.jl
 ```
 ***Do not change any folder or file names***
-Understanding ```AFFIRM-batch-inputs.csv``` file
+<br>Understanding ```AFFIRM-batch-inputs.csv``` file
