@@ -9,7 +9,7 @@ Pkg.add("AFFIRM.jl");
 ```
 Create AFFIRM folders
 ```julia
-julia> using AFFIRM;
-julia> cd("your/project/folder")
-julia> AFFIRM.create_affirm()
+using AFFIRM;
+cd("your/project/folder");
+AFFIRM.create_affirm();
 ```
