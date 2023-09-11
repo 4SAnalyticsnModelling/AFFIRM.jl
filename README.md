@@ -27,7 +27,7 @@ AFFIRM.jl folder structure
 ## Execute AFFIRM batch runs
 Execute ```src/runAFFIRM.jl``` file
 ## Understanding AFFIRM input variables
-List of user input variables in ```AFFIRM-batch-inputs.csv``` file
+List of user input variables in ```AFFIRM-batch-inputs.csv``` file; visit [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) to understand the variables more.
 ```
 - Township
 - Range
