@@ -205,18 +205,30 @@ Residue management:
 under construction
 ```
 ## Composite simulations for numerical variables
-Average values for input variables
+In composite simulations a user is allowed to run more than one scenario by inserting more than one input for a given variable. Composite simulations are allowed for the following numerical variables:
 ```
+- Soil organic matter (0-6")(%)
+- Soil pH (0-6" or 0-12")
+- Soil EC (0-6" or 0-12")(meq/100g)
+- Growing season precipitation (May-Aug)(mm)
+- Irrigation water amount, if irrigated (mm)
+- Soil test nitrogen (0-24") (lb N/ac) => numerical variables in decimals
+- Previous crop yield
+- Crop available nitrogen from applied manure (lb N/ac)
+- Expected crop price ($/bu)
+- Fertilizer price ($/tonne)
+- Investment ratio
 ```
-Step-wise simulations for input variables
-```
-```
-Monte-Carlo simulations for input variables with random uniform distributions
-```
-```
-Monte-Carlo simulations for input variables with random normal distributions
-```
-```
+The composite simulations for the above numerical variables can be performed in any of the following 3 ways:
+<br>Step-wise simulations:
+<br>Four (4) pipe separated input values representing - lower limit, unpper limit, composite simulation id (1 - for step-wise simulation), step size.
+<br>For example, if a user is willing to run a step-wise simulation for a fertilizer price scenario between ```$650``` and ```$700``` per tonnes at a ```$10``` per tonne price interval, the input for the variable ```Fertilizer price ($/tonne)```will be ```650|700|1|10``` 
+<br>Monte-Carlo simulations with random uniform sampling:
+<br>Four (4) pipe separated input values representing - lower limit, unpper limit, composite simulation id (2 - for Monte-Carlo simulations with random uniform samplings), number of iterations.
+<br>If a user is willing to run the same fertilizer price scenario in the above example, but this time with a Monte-Carlo simulation with random uniform sampling repeated ```10```times, the input for the variable ```Fertilizer price ($/tonne)```will be ```650|700|2|10``` 
+<br>Monte-Carlo simulations with random normal sampling:
+<br>Four (4) pipe separated input values representing - average value, standard deviation value, composite simulation id (3 - for Monte-Carlo simulations with random normal samplings), number of iterations.
+<br>If a user is willing to run a fertilizer price scenario with a Monte-Carlo simulation with random normal sampling repeated ```10```times, with an average fertilizer price of ```$675``` per tonne with a standard deviation of ```$20``` per tonne, the input for the variable ```Fertilizer price ($/tonne)```will be ```675|20|3|10``` 
 ## Execute AFFIRM.jl batch runs
 ```julia
 include("src/runAFFIRM.jl")
