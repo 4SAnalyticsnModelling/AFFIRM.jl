@@ -11,10 +11,10 @@ function create_affirm()
         mv("AFFIRM-data/data/" * files_, "data/" * files_, force = true)
     end
     for files_ in readdir("AFFIRM-data/input")
-        mv("AFFIRM-data/data/" * files_, "input/" * files_, force = true)
+        mv("AFFIRM-data/input/" * files_, "input/" * files_, force = true)
     end
     for files_ in readdir("AFFIRM-data/src")
-        mv("AFFIRM-data/data/" * files_, "src/" * files_, force = true)
+        mv("AFFIRM-data/src/" * files_, "src/" * files_, force = true)
     end
     rm("AFFIRM-data", recursive = true)
 end
