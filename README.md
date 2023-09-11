@@ -123,6 +123,73 @@ Nitrogen fertilizer application placement:
 "Broadcast" => 4
 ```
 Previous crop:
+```
+"Alfalfa (Hay)" => 1
+"Barley (Feed and Food)" => 2
+"Barley (Hulless)" => 3
+"Barley (Malt)" => 4
+"Buckwheat" => 5
+"Canary seed" => 6
+"Canola" => 7
+"Canola (Argentine)" => 8
+"Canola (Hybrid)" => 9
+"Canola (Juncea)" => 10
+"Canola (Polish)" => 11
+"Chickpeas" => 12
+"Corn (Forage/Silage)" => 13
+"Corn (Grain)" => 14
+"Cowpeas" => 15
+"Dry Bean (Black)" => 16
+"Dry Bean (Great Northern)" => 17
+"Dry Bean (Navy)" => 18
+"Dry Bean (Pinto)" => 19
+"Dry Bean (Shiny Black)" => 20
+"Dry Bean (Small Red)" => 21
+"Dry Bean (Yellow)" => 22
+"Faba Bean" => 23
+"Field Peas (Dun)" => 24
+"Field Peas (Forage)" => 25
+"Field Peas (Green)" => 26
+"Field Peas (Maple)" => 27
+"Field Peas (Processing)" => 28
+"Field Peas (Red)" => 29
+"Field Peas (Winter)" => 30
+"Field Peas (Yellow)" => 31
+"Flax" => 32
+"Hay and Forage for Seed" => 33
+"Lentils" => 34
+"Lentils (Winter)" => 35
+"Mustard (Brown)" => 36
+"Mustard (Oriental)" => 37
+"Mustard (Yellow)" => 38
+"Oats (Feed)" => 39
+"Oats (Forage/Silage)" => 40
+"Oats (Hulless)" => 41
+"Oats (Milling)" => 42
+"Other Oilseed" => 43
+"Other Pulse (Grain)" => 44
+"Potatoes" => 45
+"Rye (Fall)" => 46
+"Rye (Spring)" => 47
+"Safflower" => 48
+"Soybeans" => 49
+"Sugar beets" => 50
+"Sunflowers" => 51
+"Tame Hay (Legumes and Mix)" => 52
+"Tame Hay (Other)" => 53
+"Triticale (Spring)" => 54
+"Triticale (Winter)" => 55
+"Wheat - Northern Hard Red (NHR)" => 56
+"Wheat - Prairie Spring Red (PSR)" => 57
+"Wheat - Prairie Spring White (PSW)" => 58
+"Wheat - Western Amber Durum (WAD)" => 59
+"Wheat - Western Extra Strong (WES)" => 60
+"Wheat - Western Hard White Spring (WHWS)" => 61
+"Wheat - Western Red Spring (WRS)" => 62
+"Wheat - Western Red Winter (WRW)" => 63
+"Wheat - Western Soft White Spring (WSWS)" => 64
+"Wheat - Western Special Purpose (WSP)" => 65
+```
 Previous crop yield unit:
 Residue management:
 
