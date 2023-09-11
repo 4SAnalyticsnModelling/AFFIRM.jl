@@ -263,5 +263,20 @@ The output variables are written in the default ```output/AFFIRM-batch-outputs.c
 - Estimated Investment Ratio
 - Recommended?
 ```
+## AFFIRM.jl parallel runs
+If you want to take advantage of Julia multithreading in speeding up AFFIRM.jl computations start your Julia REPL by following ways:
+<br> For Windows - open your julia from command prompt as the following example:
+```
+C;\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads 10 (you can put whatever the maximum number of threads your machine supports)
+```
+<br> For MacOS - open your julia from terminal as the following example:
+```
+/Applications/Julia-[version].app/Contents/Resources/julia/bin/julia --threads 10 (you can put whatever the maximum number of threads your machine supports)
+```
+Once your julia REPL is open, check the number of threads in your julia session by following command:
+```julia
+Threads.nthreads()
+```
+You should be able to see the number of threads you choose (in this case 10) as the output.
 
 
