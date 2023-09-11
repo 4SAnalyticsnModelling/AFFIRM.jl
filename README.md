@@ -26,7 +26,7 @@ AFFIRM.jl folder structure
 ```
 ***Do not change any folder or file names without understanding the effects of each change. Better leave the folder and file names as they are and only change the values for the input variables as required***
 ## Understanding AFFIRM.jl input variables
-List of user input variables in ```AFFIRM-batch-inputs.csv``` file with their data types; visit [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) to understand the variables better.
+The input variables are provided in the default ```input/AFFIRM-batch-inputs.csv``` file. The input variables in that file with their corresponding data types are listed below; visit [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) to understand these variables better.
 ```
 - Township => Alberta township id; integer values ranging from 1 to 126
 - Range => Alberta range id; integer values ranging from 1 to 30
@@ -219,7 +219,8 @@ Monte-Carlo simulations for input variables with random normal distributions
 ```
 ## Execute AFFIRM.jl batch runs
 Execute ```src/runAFFIRM.jl```
-
+## Understanding AFFIRM.jl outputs
+The output variables are written in the default ```output/AFFIRM-batch-outputs.csv``` file. The output variables in that file are listed below; visit [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) to understand these variables better.
 
 
 
