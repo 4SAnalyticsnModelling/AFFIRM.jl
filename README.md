@@ -191,7 +191,17 @@ Previous crop:
 "Wheat - Western Special Purpose (WSP)" => 65
 ```
 Previous crop yield unit:
+```
+"tons/ac" => 1
+"bu/ac" => 2
+"lb/ac" => 3
+```
 Residue management:
+```
+"Soil Incorporated" => 1
+"Removed from Field" => 2
+"Removed by Burning" => 3
+```
 
 
 
