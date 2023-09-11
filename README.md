@@ -54,8 +54,8 @@ List of user input variables in ```AFFIRM-batch-inputs.csv``` file
 - Fertilizer price ($/tonne)
 - Investment ratio
 ```
-User input identifiers for categorical variables
-<br> Soil texture:
+## User input identifiers for categorical variables
+Soil texture:
 ```
 "Very Coarse" => 1
 "Coarse" => 2
