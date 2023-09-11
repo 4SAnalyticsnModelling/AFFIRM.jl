@@ -227,7 +227,7 @@ The output variables are written in the default ```output/AFFIRM-batch-outputs.c
 - Township
 - Range
 - Meridian
-- Soil Zone
+- Soil Zone => Name of the agricultural soil zone of Alberta which the township falls under   
 - Soil organic matter (0-6") (%)
 - Soil texture
 - Spring soil moisture
@@ -235,8 +235,8 @@ The output variables are written in the default ```output/AFFIRM-batch-outputs.c
 - Soil EC (0-6" or 0-12") (meq/100g)
 - Crop
 - Irrigation
-- Growing season moisture flag
-- Growing season precipitation (May-Aug) + irrigation (if any) (mm)
+- Growing season moisture flag => A description expressing whether it's a user input or long-term precipitation probability estimates representing Low, Intermediate or Optimum moisture conditions
+- Growing season precipitation (May-Aug) + irrigation (if any) (mm)  => A description expressing whether it's a user input or typical irrigation estimates representing Low, Intermediate or Optimum irrigation levels
 - Nitrogen fertilizer product
 - Nitrogen fertilizer application timing
 - Nitrogen fertilizer application placement
@@ -251,7 +251,7 @@ The output variables are written in the default ```output/AFFIRM-batch-outputs.c
 - User chosen investment ratio
 - Estimated N release from N mineralization over the growing season (lb N/ac)
 - N credit from previous crop residue (lb N/ac)
-- Total plant available nitrogen from soil (lb N/ac)
+- Total plant available nitrogen from soil (lb N/ac) => Sum of Estimated N release from N mineralization over the growing season (lb N/ac), N credit from previous crop residue (lb N/ac), Soil test nitrogen (0-24") (lb N/ac), and Crop available nitrogen from applied manure (lb N/ac)
 - Fertilizer N application rate (lb N/ac)
 - Predicted crop yield (bu/ac)
 - Predicted yield increase (bu/ac)
@@ -261,13 +261,13 @@ The output variables are written in the default ```output/AFFIRM-batch-outputs.c
 - Total cost of fertilizer N ($/ac)
 - Marginal cost of fertilizer N ($/ac)
 - Estimated Investment Ratio
-- Recommended?
+- Recommended? => A flag "Yes" indicates that the nitrogen rate in that row is an economically optimum nitrogen application rate and the predicted crop yield in that row is an economically optimum crop yield for the given scenario in that row.
 ```
 ## AFFIRM.jl parallel runs
 If you want to take advantage of Julia multithreading in speeding up AFFIRM.jl computations start your Julia REPL by following ways:
 <br> For Windows - open your julia from command prompt as the following example:
 ```
-C;\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads 10 (you can put whatever the maximum number of threads your machine supports)
+C:\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads 10 (you can put whatever the maximum number of threads your machine supports)
 ```
 <br> For MacOS - open your julia from terminal as the following example:
 ```
@@ -277,6 +277,6 @@ Once your julia REPL is open, check the number of threads in your julia session 
 ```julia
 Threads.nthreads()
 ```
-You should be able to see the number of threads you choose (in this case 10) as the output.
+You should be able to see the number of threads you chose (in this case 10) as the output.
 
 
