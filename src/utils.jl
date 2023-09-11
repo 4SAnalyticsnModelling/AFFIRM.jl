@@ -14,7 +14,7 @@ function writeoutputs(xs...)
     outputs_ :: String = replace(replace(replace(j * "\n", r"\[|\]" => ""), r"\.0\,|\.00\," => ","), r"\.0\n|\.00\n" => "\n")
     return outputs_
 end
-# Function for Monte-Carlo or Step-wise simulations
+# Function for step-wise or Monte-Carlo simulations for numerical variables
 function get_distribution(text_in)
     line = split(text_in, "|")
     if length(line) > 1
@@ -37,7 +37,7 @@ function get_distribution(text_in)
     end
     return round.(out_arr, digits = 2)
 end
-# Function for combineds simulations for categorical variables
+# Function for composite simulations for categorical variables
 function get_combined_simulation(text_in)
     line = split(text_in, "|")
     out_arr = parse.(Int, line)
