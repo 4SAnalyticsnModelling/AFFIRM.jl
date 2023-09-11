@@ -248,7 +248,7 @@ The output variables are written in the default ```output/AFFIRM-batch-outputs.c
 - Crop available nitrogen from applied manure (lb N/ac)
 - Expected crop price ($/bu)
 - Fertilizer price ($/tonne)
-- Investment ratio
+- User chosen investment ratio
 - Estimated N release from N mineralization over the growing season (lb N/ac)
 - N credit from previous crop residue (lb N/ac)
 - Total plant available nitrogen from soil (lb N/ac)
@@ -261,7 +261,6 @@ The output variables are written in the default ```output/AFFIRM-batch-outputs.c
 - Total cost of fertilizer N ($/ac)
 - Marginal cost of fertilizer N ($/ac)
 - Estimated Investment Ratio
-- User chosen Investment Ratio
 - Recommendation
 ```
 
