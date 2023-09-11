@@ -8,7 +8,7 @@ Install AFFIRM.jl
 using Pkg;
 Pkg.add("https://github.com/4SAnalyticsnModelling/AFFIRM.jl");
 ```
-Create AFFIRM folders
+Create AFFIRM.jl folders
 ```julia
 using AFFIRM;
 cd("your/project/folder");
