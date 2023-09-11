@@ -25,8 +25,6 @@ AFFIRM.jl folder structure
   - runAFFIRM.jl
 ```
 ***Do not change any folder or file names***
-## Execute AFFIRM.jl batch runs
-Execute ```src/runAFFIRM.jl``` file
 ## Understanding AFFIRM.jl input variables
 List of user input variables in ```AFFIRM-batch-inputs.csv``` file with their data types; visit [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) to understand the variables better.
 ```
@@ -219,6 +217,8 @@ Monte-Carlo simulations for input variables with random uniform distributions
 Monte-Carlo simulations for input variables with random normal distributions
 ```
 ```
+## Execute AFFIRM.jl batch runs
+Execute ```src/runAFFIRM.jl```
 
 
 
