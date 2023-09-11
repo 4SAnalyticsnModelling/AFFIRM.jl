@@ -202,6 +202,24 @@ Residue management:
 "Removed from Field" => 2
 "Removed by Burning" => 3
 ```
+## Composite simulations for categorical variables
+```
+under construction
+```
+## Composite simulations for numerical variables
+Average values for input variables
+```
+```
+Step-wise simulations for input variables
+```
+```
+Monte-Carlo simulations for input variables with random uniform distributions
+```
+```
+Monte-Carlo simulations for input variables with random normal distributions
+```
+```
+
 
 
 
