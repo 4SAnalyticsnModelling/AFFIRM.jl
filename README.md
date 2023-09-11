@@ -28,7 +28,7 @@ AFFIRM.jl folder structure
 ## Execute AFFIRM.jl batch runs
 Execute ```src/runAFFIRM.jl``` file
 ## Understanding AFFIRM.jl input variables
-List of user input variables in ```AFFIRM-batch-inputs.csv``` file with their data types; visit [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) to understand the variables more.
+List of user input variables in ```AFFIRM-batch-inputs.csv``` file with their data types; visit [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) to understand the variables better.
 ```
 - Township => Alberta township id; integer values ranging from 1 to 126
 - Range => Alberta range id; integer values ranging from 1 to 30
