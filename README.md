@@ -28,32 +28,32 @@ AFFIRM.jl folder structure
 ## Execute AFFIRM.jl batch runs
 Execute ```src/runAFFIRM.jl``` file
 ## Understanding AFFIRM.jl input variables
-List of user input variables in ```AFFIRM-batch-inputs.csv``` file; visit [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) to understand the variables more.
+List of user input variables in ```AFFIRM-batch-inputs.csv``` file with their data types; visit [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) to understand the variables more.
 ```
-- Township
-- Range
-- Meridian
-- Soil organic matter (0-6")(%)
-- Soil texture
-- Spring soil moisture
-- Soil pH (0-6" or 0-12")
-- Soil EC (0-6" or 0-12")(meq/100g)
-- Crop
-- Irrigation
-- Growing season precipitation (May-Aug)(mm)
-- Irrigation water amount, if irrigated (mm)
-- Nitrogen fertilizer product
-- Nitrogen fertilizer application timing
-- Nitrogen fertilizer application placement
-- Soil test nitrogen (0-24") (lb N/ac)
-- Previous crop
-- Previous crop yield
-- Previous crop yield unit
-- Residue management
-- Crop available nitrogen from applied manure (lb N/ac)
-- Expected crop price ($/bu)
-- Fertilizer price ($/tonne)
-- Investment ratio
+- Township => Alberta township id; integer values ranging from 1 to 126
+- Range => Alberta range id; integer values ranging from 1 to 30
+- Meridian => Alberta meridian id; categorical variables: "W4", "W5" and "W6"
+- Soil organic matter (0-6")(%) => numerical values in decimals
+- Soil texture => categorical values represents by identifiers described below
+- Spring soil moisture => categorical values represents by identifiers described below
+- Soil pH (0-6" or 0-12") => numerical values in decimals
+- Soil EC (0-6" or 0-12")(meq/100g) => numerical values in decimals
+- Crop => categorical values represents by identifiers described below
+- Irrigation => categorical values represents by identifiers described below
+- Growing season precipitation (May-Aug)(mm) => numerical values in decimals or as integers
+- Irrigation water amount, if irrigated (mm) => numerical values in decimals or as integers
+- Nitrogen fertilizer product => categorical values represents by identifiers described below
+- Nitrogen fertilizer application timing => categorical values represents by identifiers described below
+- Nitrogen fertilizer application placement => categorical values represents by identifiers described below
+- Soil test nitrogen (0-24") (lb N/ac) => numerical values in decimals
+- Previous crop => categorical values represents by identifiers described below
+- Previous crop yield => numerical values in decimals
+- Previous crop yield unit => categorical values represents by identifiers described below
+- Residue management => categorical values represents by identifiers described below
+- Crop available nitrogen from applied manure (lb N/ac) => numerical values in decimals
+- Expected crop price ($/bu) => numerical values in decimals
+- Fertilizer price ($/tonne) => numerical values in decimals
+- Investment ratio => numerical values in decimals
 ```
 ## User input identifiers for categorical variables
 Soil texture:
