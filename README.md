@@ -192,9 +192,9 @@ Previous crop:
 ```
 Previous crop yield unit:
 ```
-"tons/ac" => 1
-"bu/ac" => 2
-"lb/ac" => 3
+"tons/ac" => 1 (must be used with previous crop ids - 1, 13, 45, 50, 52 and 53)
+"bu/ac" => 2 (must be used with all previous crop ids except for the ones with above and below units)
+"lb/ac" => 3 (must be used with previous crop ids - 6, 33 and 51)
 ```
 Residue management:
 ```
