@@ -261,7 +261,7 @@ The output variables are written in the default ```output/AFFIRM-batch-outputs.c
 - Total cost of fertilizer N ($/ac)
 - Marginal cost of fertilizer N ($/ac)
 - Estimated Investment Ratio
-- Recommendation
+- Recommended?
 ```
 
 
