@@ -218,7 +218,9 @@ Monte-Carlo simulations for input variables with random normal distributions
 ```
 ```
 ## Execute AFFIRM.jl batch runs
-Execute ```src/runAFFIRM.jl```
+```julia
+include("src/runAFFIRM.jl")
+```
 ## Understanding AFFIRM.jl outputs
 The output variables are written in the default ```output/AFFIRM-batch-outputs.csv``` file. The output variables in that file are listed below; visit [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) to understand these variables better.
 
