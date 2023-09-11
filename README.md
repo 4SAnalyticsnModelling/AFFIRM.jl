@@ -5,7 +5,7 @@ Alberta Farm Fertilizer Information Recommendation Manager (AFFIRM). AFFIRM has 
 Install AFFIRM.jl
 ```julia
 using("Pkg");
-Pkg.add("AFFIRM.jl");
+Pkg.add("https://github.com/4SAnalyticsnModelling/AFFIRM.jl");
 ```
 Create AFFIRM folders
 ```julia
