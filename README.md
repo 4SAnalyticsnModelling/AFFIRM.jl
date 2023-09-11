@@ -201,11 +201,18 @@ Residue management:
 "Removed by Burning" => 3
 ```
 ## Composite simulations for categorical variables
+In composite simulations a user is allowed to run more than one scenario by inserting more than one input for a given variable. Composite simulations are allowed for the following categorical variables:
 ```
-under construction
+- Soil texture
+- Spring soil moisture
+- Nitrogen fertilizer application timing
+- Nitrogen fertilizer application placement
+- Residue management
 ```
+The composite simulations for the above categorical variables can be achieved by inserting more than one pipe separated identifier values of interests. For example, if a user wants to run both ```Fall``` and ```Spring``` scenarios for the variable ```Nitrogen fertilizer application timing```, the user can insert the input for that variable as ```1|2```
+<br>
 ## Composite simulations for numerical variables
-In composite simulations a user is allowed to run more than one scenario by inserting more than one input for a given variable. Composite simulations are allowed for the following numerical variables:
+Composite simulations are also allowed for the following numerical variables:
 ```
 - Soil organic matter (0-6")(%)
 - Soil pH (0-6" or 0-12")
