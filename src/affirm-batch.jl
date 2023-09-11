@@ -4,10 +4,19 @@ const git = Git.git()
 # Function to create AFFIRM folder environments
 function create_affirm()
     run(`$git clone https://github.com/4SAnalyticsnModelling/AFFIRM-data`)
-    rm(".gitignore", force = true)
-    rm("LICENSE", force = true)
-    rm("README.md", force = true)
-    mkdir("output", force = true)
+    for folders in ["data", "input", "output", "src"]
+        mkdir(folders)
+    end
+    for files_ in readdir("AFFIRM-data/data")
+        mv("AFFIRM-data/data/" * files_, "data/" * files_, force = true)
+    end
+    for files_ in readdir("AFFIRM-data/input")
+        mv("AFFIRM-data/data/" * files_, "input/" * files_, force = true)
+    end
+    for files_ in readdir("AFFIRM-data/src")
+        mv("AFFIRM-data/data/" * files_, "src/" * files_, force = true)
+    end
+    rm("AFFIRM-data", recursive = true)
 end
 # Function to import AFFIRM coefficients from config files in data folder
 function get_coefficients(data_file_path :: String = "../data/")
