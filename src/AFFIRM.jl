@@ -7,7 +7,7 @@ module AFFIRM
     const ns_max = 350.0f0
     const kg_ha_n_lb_ac = 1.12f0
     
-    export run_affirm
+    export run_affirm, create_affirm
     
     include("utils.jl")
     include("affirm-batch.jl")
