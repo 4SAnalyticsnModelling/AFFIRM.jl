@@ -33,27 +33,27 @@ List of user input variables in ```AFFIRM-batch-inputs.csv``` file with their da
 - Township => Alberta township id; integer values ranging from 1 to 126
 - Range => Alberta range id; integer values ranging from 1 to 30
 - Meridian => Alberta meridian id; categorical variables: "W4", "W5" and "W6"
-- Soil organic matter (0-6")(%) => numerical values in decimals
+- Soil organic matter (0-6")(%) => numerical variables in decimals
 - Soil texture => categorical variables represents by identifiers described below
 - Spring soil moisture => categorical variables represented by identifiers described below
-- Soil pH (0-6" or 0-12") => numerical values in decimals
-- Soil EC (0-6" or 0-12")(meq/100g) => numerical values in decimals
+- Soil pH (0-6" or 0-12") => numerical variables in decimals
+- Soil EC (0-6" or 0-12")(meq/100g) => numerical variables in decimals
 - Crop => categorical variables represented by identifiers described below
 - Irrigation => categorical variables represented by identifiers described below
-- Growing season precipitation (May-Aug)(mm) => numerical values in decimals or as integers
-- Irrigation water amount, if irrigated (mm) => numerical values in decimals or as integers
+- Growing season precipitation (May-Aug)(mm) => numerical variables in decimals or as integers
+- Irrigation water amount, if irrigated (mm) => numerical variables in decimals or as integers
 - Nitrogen fertilizer product => categorical variables represented by identifiers described below
 - Nitrogen fertilizer application timing => categorical variables represented by identifiers described below
 - Nitrogen fertilizer application placement => categorical variables represented by identifiers described below
-- Soil test nitrogen (0-24") (lb N/ac) => numerical values in decimals
+- Soil test nitrogen (0-24") (lb N/ac) => numerical variables in decimals
 - Previous crop => categorical variables represented by identifiers described below
-- Previous crop yield => numerical values in decimals
+- Previous crop yield => numerical variables in decimals
 - Previous crop yield unit => categorical variables represented by identifiers described below
 - Residue management => categorical variables represented by identifiers described below
-- Crop available nitrogen from applied manure (lb N/ac) => numerical values in decimals
-- Expected crop price ($/bu) => numerical values in decimals
-- Fertilizer price ($/tonne) => numerical values in decimals
-- Investment ratio => numerical values in decimals
+- Crop available nitrogen from applied manure (lb N/ac) => numerical variables in decimals
+- Expected crop price ($/bu) => numerical variables in decimals
+- Fertilizer price ($/tonne) => numerical variables in decimals
+- Investment ratio => numerical variables in decimals
 ```
 ## User input identifiers for categorical variables
 Soil texture:
