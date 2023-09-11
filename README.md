@@ -24,7 +24,7 @@ AFFIRM.jl folder structure
 > src
   - runAFFIRM.jl
 ```
-***Do not change any folder or file names***
+***Do not change any folder or file names without understanding what you are doing***
 ## Understanding AFFIRM.jl input variables
 List of user input variables in ```AFFIRM-batch-inputs.csv``` file with their data types; visit [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) to understand the variables better.
 ```
