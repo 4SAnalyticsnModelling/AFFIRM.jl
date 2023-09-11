@@ -68,3 +68,63 @@ Soil texture:
 "Mucky Peat" => 8
 "Peat" => 9
 ```
+Spring soil moisture:
+```
+"Low" => 1
+"Intermediate" => 2
+"Optimum" => 3
+```
+Crop:
+```
+"Barley (Feed and Food)" => 1
+"Barley (Hulless)" => 2
+"Barley (Malt) " => 3
+"Canola" => 4
+"Canola (Argentine)" => 5
+"Canola (Polish)" => 6
+"Flax" => 7
+"Oats" => 8
+"Triticale (Spring)" => 9
+"Wheat - Western Red Spring (WRS)" => 10
+"Wheat - Northern Hard Red (NHR)" => 11
+"Wheat - Western Amber Durum (WAD)" => 12
+"Wheat - Western Extra Strong (WES)" => 13
+"Wheat - Western Soft White Spring (WSWS)" => 14
+```
+Irrigation:
+```
+"No" => 1
+"Yes" => 2
+```
+Nitrogen fertilizer product:
+```
+"ESN" => 1 
+"ESN - Urea Blend (25:75)" => 2
+"ESN - Urea Blend (50:50)" => 3
+"ESN - Urea Blend (75:25)" => 4
+"SuperU" => 5
+"Urea" => 6
+"Urea + eNtrench" => 7
+"UAN (28-0-0) + Agrotain" => 8
+"UAN (28-0-0)" => 9
+"Anhydrous Ammonia" => 10
+"Ammonium Nitrate" => 11
+```
+Nitrogen fertilizer application timing:
+```
+"Fall" => 1
+"Spring" => 2
+```
+Nitrogen fertilizer application placement:
+```
+"Banded" => 1 
+"Seed Placed" => 2
+"Broadcast/incorporated (Surface banded)" => 3
+"Broadcast" => 4
+```
+Previous crop:
+Previous crop yield unit:
+Residue management:
+
+
+
