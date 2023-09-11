@@ -27,7 +27,7 @@ AFFIRM.jl folder structure
 ## Execute AFFIRM batch runs
 Execute ```src/runAFFIRM.jl``` file
 ## Understanding AFFIRM input variables
-<br>Variables in ```AFFIRM-batch-inputs.csv``` file
+Variables in ```AFFIRM-batch-inputs.csv``` file
 ```
 Township | Range | Meridian | Soil organic matter (0-6")(%) | Soil texture | Spring soil moisture | Soil pH (0-6" or 0-12") | Soil EC (0-6" or 0-12")(meq/100g) | Crop | Irrigation | Growing season precipitation (May-Aug)(mm) | Irrigation water amount, if irrigated (mm) | Nitrogen fertilizer product | Nitrogen fertilizer application timing | Nitrogen fertilizer application placement | Soil test nitrogen (0-24") (lb N/ac) | Previous crop | Previous crop yield | Previous crop yield unit | Residue management | Crop available nitrogen from applied manure (lb N/ac) | Expected crop price ($/bu) | Fertilizer price ($/tonne) | Investment ratio
 
