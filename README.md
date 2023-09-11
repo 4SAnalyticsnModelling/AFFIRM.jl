@@ -201,7 +201,7 @@ Residue management:
 "Removed by Burning" => 3
 ```
 ## Composite simulations for categorical variables
-In composite simulations a user is allowed to run more than one scenario by inserting more than one input for a given variable. Composite simulations are allowed for the following categorical variables:
+In composite simulations a user is allowed to run more than one sub-scenarios for a given variable in a scenario in a single row of the input file by inserting more than one input for that given variable within that row. Composite simulations are allowed for the following categorical variables:
 ```
 - Soil texture
 - Spring soil moisture
