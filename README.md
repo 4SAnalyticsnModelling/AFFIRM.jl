@@ -223,6 +223,46 @@ include("src/runAFFIRM.jl")
 ```
 ## Understanding AFFIRM.jl outputs
 The output variables are written in the default ```output/AFFIRM-batch-outputs.csv``` file. The output variables in that file are listed below; visit [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) to understand these variables better.
-
+```
+- Township
+- Range
+- Meridian
+- Soil Zone
+- Soil organic matter (0-6") (%)
+- Soil texture
+- Spring soil moisture
+- Soil pH (0-6" or 0-12")
+- Soil EC (0-6" or 0-12") (meq/100g)
+- Crop
+- Irrigation
+- Growing season moisture flag
+- Growing season precipitation (May-Aug) + irrigation (if any) (mm)
+- Nitrogen fertilizer product
+- Nitrogen fertilizer application timing
+- Nitrogen fertilizer application placement
+- Soil test nitrogen (0-24") (lb N/ac)
+- Previous crop
+- Previous crop yield
+- Previous crop yield unit
+- Residue management
+- Crop available nitrogen from applied manure (lb N/ac)
+- Expected crop price ($/bu)
+- Fertilizer price ($/tonne)
+- Investment ratio
+- Estimated N release from N mineralization over the growing season (lb N/ac)
+- N credit from previous crop residue (lb N/ac)
+- Total plant available nitrogen from soil (lb N/ac)
+- Fertilizer N application rate (lb N/ac)
+- Predicted crop yield (bu/ac)
+- Predicted yield increase (bu/ac)
+- Added yield increase (bu/ac)
+- Estimated revenue from fertilizer N ($/ac)
+- Marginal return or Gross margin change ($/ac)
+- Total cost of fertilizer N ($/ac)
+- Marginal cost of fertilizer N ($/ac)
+- Estimated Investment Ratio
+- User chosen Investment Ratio
+- Recommendation
+```
 
 
