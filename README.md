@@ -291,6 +291,7 @@ The output variables are written in the default ```output/AFFIRM-batch-outputs.c
 ```
 ## AFFIRM.jl parallel runs
 If you want to take advantage of Julia multithreading for parallel computations with AFFIRM.jl, start your Julia REPL as follows:
+<br>
 <br> For Windows - open your julia from command prompt as the following example:
 ```
 C:\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads 10 (you can put whatever the maximum number of threads your machine supports)
