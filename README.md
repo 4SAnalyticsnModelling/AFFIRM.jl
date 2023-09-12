@@ -290,7 +290,7 @@ The output variables are written in the default ```output/AFFIRM-batch-outputs.c
 - Recommended? => A flag "Yes" indicates that the nitrogen rate in that row is an economically optimum nitrogen application rate and the predicted crop yield in that row is an economically optimum crop yield for the given scenario in that row.
 ```
 ## AFFIRM.jl parallel runs
-If you want to take advantage of Julia multithreading in speeding up AFFIRM.jl computations start your Julia REPL by following ways:
+If you want to take advantage of Julia multithreading for parallel computations with AFFIRM.jl, start your Julia REPL as follows:
 <br> For Windows - open your julia from command prompt as the following example:
 ```
 C:\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads 10 (you can put whatever the maximum number of threads your machine supports)
