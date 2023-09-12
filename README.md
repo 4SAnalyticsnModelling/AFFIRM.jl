@@ -3,7 +3,28 @@
 Alberta Farm Fertilizer Information Recommendation Manager (AFFIRM) has 3 concurrent versions - [AFFIRM v3.0](https://www.alberta.ca/alberta-farm-fertilizer-information-and-recommendation-manager), [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) and AFFIRM.jl. The [AFFIRM v3.0](https://www.alberta.ca/alberta-farm-fertilizer-information-and-recommendation-manager) is the production version of AFFIRM. The [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) is the nitrogen sub-model of [AFFIRM v3.0](https://www.alberta.ca/alberta-farm-fertilizer-information-and-recommendation-manager). The AFFIRM.jl provides batch run utilites for multiple scenarios and provides similar functionalities as in [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/).
 
 ## Get started with AFFIRM.jl
-Install AFFIRM.jl
+<br>
+<br> Install Julia Programming Language
+[Getting started with Julia](https://docs.julialang.org/en/v1/manual/getting-started/)
+<br>
+<br> Setting up for parallel computing
+If you want to take advantage of Julia multithreading for parallel computations with AFFIRM.jl, start your Julia REPL as follows:
+<br>
+<br> For Windows - start Julia from command prompt as the following example:
+```
+C:\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads 10 (you can put whatever the maximum number of threads your machine supports)
+```
+<br> For MacOS - start Julia from terminal as the following example:
+```
+/Applications/Julia-[version].app/Contents/Resources/julia/bin/julia --threads 10 (you can put whatever the maximum number of threads your machine supports)
+```
+Once Julia REPL is open, check the number of threads by following command:
+```julia
+julia> Threads.nthreads()
+10
+```
+<br>
+<br>Install AFFIRM.jl
 ```julia
 julia> using Pkg
 julia> Pkg.add(url = "https://github.com/4SAnalyticsnModelling/AFFIRM.jl")
@@ -294,23 +315,3 @@ The output variables are written in the default ```output/AFFIRM-batch-outputs.c
 - Estimated Investment Ratio
 - Recommended? => A flag "Yes" indicates that the nitrogen rate in that row is an economically optimum nitrogen application rate and the predicted crop yield in that row is an economically optimum crop yield for the given scenario in that row.
 ```
-## AFFIRM.jl parallel runs
-If you want to take advantage of Julia multithreading for parallel computations with AFFIRM.jl, start your Julia REPL as follows:
-<br>
-<br> For Windows - start Julia from command prompt as the following example:
-```
-C:\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads 10 (you can put whatever the maximum number of threads your machine supports)
-```
-<br> For MacOS - start Julia from terminal as the following example:
-```
-/Applications/Julia-[version].app/Contents/Resources/julia/bin/julia --threads 10 (you can put whatever the maximum number of threads your machine supports)
-```
-Once Julia REPL is open, check the number of threads by following command:
-```julia
-julia> Threads.nthreads()
-10
-```
-## Helpful link
-[Getting started with Julia](https://docs.julialang.org/en/v1/manual/getting-started/)
-
-
