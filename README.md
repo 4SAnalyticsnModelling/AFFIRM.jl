@@ -230,7 +230,7 @@ The composite simulations for the above numerical variables can be performed in 
 <br>
 <br>1) Step-wise simulations:
 <br>
-<br>Insert four (4) pipe-separated input values representing - lower limit, unpper limit, composite simulation id (1 - for step-wise simulation), and step size respectively.
+<br><tab>Insert four (4) pipe-separated input values representing - lower limit, unpper limit, composite simulation id (1 - for step-wise simulation), and step size respectively.
 <br>For example, if a user is willing to run a step-wise simulation for a fertilizer price scenario between ```$650``` and ```$700``` per tonnes at a ```$10``` per tonne price interval, the input for the variable ```Fertilizer price ($/tonne)```will be ```650|700|1|10``` 
 <br>
 <br>2) Monte-Carlo simulations with random uniform sampling:
