@@ -3,12 +3,13 @@
 Alberta Farm Fertilizer Information Recommendation Manager (AFFIRM) has 3 concurrent versions - [AFFIRM v3.0](https://www.alberta.ca/alberta-farm-fertilizer-information-and-recommendation-manager), [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) and AFFIRM.jl. The [AFFIRM v3.0](https://www.alberta.ca/alberta-farm-fertilizer-information-and-recommendation-manager) is the production version of AFFIRM. The [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) is the nitrogen sub-model of [AFFIRM v3.0](https://www.alberta.ca/alberta-farm-fertilizer-information-and-recommendation-manager). The AFFIRM.jl provides batch run utilites for multiple scenarios and provides similar functionalities as in [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/).
 
 ## Getting started with AFFIRM.jl
-<br>Install Julia Programming Language
+###Install Julia Programming Language
 <br>
 <br>[Getting started with Julia](https://docs.julialang.org/en/v1/manual/getting-started/)
 <br>
 <br> Setting up for parallel computing
-If you want to take advantage of Julia multithreading for parallel computations with AFFIRM.jl, start your Julia REPL as follows:
+<br>
+<br>If you want to take advantage of Julia multithreading for parallel computations with AFFIRM.jl, start your Julia REPL as follows:
 <br>
 <br> For Windows - start Julia from command prompt as the following example:
 ```
