@@ -2,9 +2,8 @@
 # AFFIRM.jl 
 Alberta Farm Fertilizer Information Recommendation Manager (AFFIRM) has 3 concurrent versions - [AFFIRM v3.0](https://www.alberta.ca/alberta-farm-fertilizer-information-and-recommendation-manager), [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) and AFFIRM.jl. The [AFFIRM v3.0](https://www.alberta.ca/alberta-farm-fertilizer-information-and-recommendation-manager) is the production version of AFFIRM. The [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) is the nitrogen sub-model of [AFFIRM v3.0](https://www.alberta.ca/alberta-farm-fertilizer-information-and-recommendation-manager). The AFFIRM.jl provides batch run utilites for multiple scenarios and provides similar functionalities as in [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/).
 
-## Get started with AFFIRM.jl
-<br>
-<br> Install Julia Programming Language
+## Getting started with AFFIRM.jl
+<br>Install Julia Programming Language
 [Getting started with Julia](https://docs.julialang.org/en/v1/manual/getting-started/)
 <br>
 <br> Setting up for parallel computing
