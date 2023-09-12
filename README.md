@@ -15,7 +15,7 @@ Alberta Farm Fertilizer Information Recommendation Manager (AFFIRM) has 3 concur
 ```
 C:\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads 10 (you can put whatever the maximum number of threads your machine supports)
 ```
-<br> For MacOS - start Julia from terminal as the following example:
+<br>--> For MacOS - start Julia from terminal as the following example:
 ```
 /Applications/Julia-[version].app/Contents/Resources/julia/bin/julia --threads 10 (you can put whatever the maximum number of threads your machine supports)
 ```
@@ -24,7 +24,7 @@ Once Julia REPL is open, check the number of threads by following command:
 julia> Threads.nthreads()
 10
 ```
-<br>Install AFFIRM.jl
+**==> Install AFFIRM.jl**
 ```julia
 julia> using Pkg
 julia> Pkg.add(url = "https://github.com/4SAnalyticsnModelling/AFFIRM.jl")
@@ -34,14 +34,13 @@ or
 julia> ]
 (@v1.9) pkg> add "https://github.com/4SAnalyticsnModelling/AFFIRM.jl"
 ```
-Create AFFIRM.jl folders
+**==> Create AFFIRM.jl folders**
 ```julia
 julia> using AFFIRM
 julia> cd("your/project/folder")
 julia> create_affirm()
 ```
 ## AFFIRM.jl folder structure
-AFFIRM.jl folder structure
 ```
 > data
 > input
@@ -80,7 +79,7 @@ The input variables are provided in the default ```input/AFFIRM-batch-inputs.csv
 - Investment ratio => numerical variables in decimals
 ```
 ## User input identifiers for categorical variables
-Soil texture:
+**==> Soil texture:**
 ```
 "Very Coarse" => 1
 "Coarse" => 2
@@ -92,13 +91,13 @@ Soil texture:
 "Mucky Peat" => 8
 "Peat" => 9
 ```
-Spring soil moisture:
+**==> Spring soil moisture:**
 ```
 "Low" => 1
 "Intermediate" => 2
 "Optimum" => 3
 ```
-Crop:
+**==> Crop:**
 ```
 "Barley (Feed and Food)" => 1
 "Barley (Hulless)" => 2
@@ -115,12 +114,12 @@ Crop:
 "Wheat - Western Extra Strong (WES)" => 13
 "Wheat - Western Soft White Spring (WSWS)" => 14
 ```
-Irrigation:
+**==> Irrigation:**
 ```
 "No" => 1
 "Yes" => 2
 ```
-Nitrogen fertilizer product:
+**==> Nitrogen fertilizer product:**
 ```
 "ESN" => 1 
 "ESN - Urea Blend (25:75)" => 2
@@ -134,19 +133,19 @@ Nitrogen fertilizer product:
 "Anhydrous Ammonia" => 10
 "Ammonium Nitrate" => 11
 ```
-Nitrogen fertilizer application timing:
+**==> Nitrogen fertilizer application timing:**
 ```
 "Fall" => 1
 "Spring" => 2
 ```
-Nitrogen fertilizer application placement:
+**==> Nitrogen fertilizer application placement:**
 ```
 "Banded" => 1 
 "Seed Placed" => 2
 "Broadcast/incorporated (Surface banded)" => 3
 "Broadcast" => 4
 ```
-Previous crop:
+**==> Previous crop:**
 ```
 "Alfalfa (Hay)" => 1
 "Barley (Feed and Food)" => 2
@@ -214,13 +213,13 @@ Previous crop:
 "Wheat - Western Soft White Spring (WSWS)" => 64
 "Wheat - Western Special Purpose (WSP)" => 65
 ```
-Previous crop yield unit:
+**==> Previous crop yield unit:**
 ```
 "tons/ac" => 1 (must be used with previous crop ids - 1, 13, 45, 50, 52 and 53)
 "bu/ac" => 2 (must be used with all previous crop ids except for the ones with above and below units)
 "lb/ac" => 3 (must be used with previous crop ids - 6, 33 and 51)
 ```
-Residue management:
+**==> Residue management:**
 ```
 "Soil Incorporated" => 1
 "Removed from Field" => 2
@@ -254,17 +253,17 @@ Composite simulations are also allowed for the following numerical variables:
 ```
 The composite simulations for the above numerical variables can be performed in any of the following 3 ways:
 <br>
-<br>1) Step-wise simulations:
+<br>**1) Step-wise simulations:**
 <br>
 <br>Insert four (4) pipe-separated input values representing - lower limit, unpper limit, composite simulation id (1 - for step-wise simulation), and step size respectively.
 <br>For example, if a user is willing to run a step-wise simulation for a fertilizer price scenario between ```$650``` and ```$700``` per tonnes at a ```$10``` per tonne price interval, the input for the variable ```Fertilizer price ($/tonne)```will be ```650|700|1|10``` 
 <br>
-<br>2) Monte-Carlo simulations with random uniform sampling:
+<br>**2) Monte-Carlo simulations with random uniform sampling:**
 <br>
 <br>Insert four (4) pipe separated input values representing - lower limit, unpper limit, composite simulation id (2 - for Monte-Carlo simulations with random uniform samplings), and number of iterations respectively.
 <br>If a user is willing to run the same fertilizer price scenario in the above example, but this time with a Monte-Carlo simulation with random uniform sampling repeated ```10```times, the input for the variable ```Fertilizer price ($/tonne)```will be ```650|700|2|10``` 
 <br>
-<br>3) Monte-Carlo simulations with random normal sampling:
+<br>**3) Monte-Carlo simulations with random normal sampling:**
 <br>
 <br>Insert four (4) pipe separated input values representing - average value, standard deviation value, composite simulation id (3 - for Monte-Carlo simulations with random normal samplings), and number of iterations respectively.
 <br>If a user is willing to run a fertilizer price scenario with a Monte-Carlo simulation with random normal sampling repeated ```10```times, with an average fertilizer price of ```$675``` per tonne with a standard deviation of ```$20``` per tonne, the input for the variable ```Fertilizer price ($/tonne)```will be ```675|20|3|10```
