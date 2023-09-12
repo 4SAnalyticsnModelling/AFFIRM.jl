@@ -9,20 +9,31 @@ Alberta Farm Fertilizer Information Recommendation Manager (AFFIRM) has 3 concur
 <br>
 <br>**==> Setting up for parallel computing**
 <br>
-<br>If you want to take advantage of Julia multithreading for parallel computations with AFFIRM.jl, start your Julia REPL as follows:
+<br>If you want to take advantage of Julia multithreading for parallel computations with AFFIRM.jl, you can start Julia with as many threads as you want:
 <br><br>
---> For Windows - start Julia from command prompt as the following example:
+--> Windows command prompt:
 ```
-C:\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads 10 (you can put whatever the maximum number of threads your machine supports)
+C:\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads 10
 ```
-<br>--> For MacOS - start Julia from terminal as the following example:
+<br>--> MacOS terminal:
 ```
-/Applications/Julia-[version].app/Contents/Resources/julia/bin/julia --threads 10 (you can put whatever the maximum number of threads your machine supports)
+/Applications/Julia-[version].app/Contents/Resources/julia/bin/julia --threads 10
 ```
 Once Julia REPL is open, check the number of threads by following command:
 ```julia
 julia> Threads.nthreads()
 10
+```
+<br>
+You can use ```--threads auto``` to start Julia with the number of threads available on the system:
+<br><br>
+--> Windows command prompt:
+```
+C:\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads auto
+```
+<br>--> MacOS terminal:
+```
+/Applications/Julia-[version].app/Contents/Resources/julia/bin/julia --threads auto
 ```
 **==> Install AFFIRM.jl**
 ```julia
