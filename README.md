@@ -24,7 +24,6 @@ Once Julia REPL is open, check the number of threads by following command:
 julia> Threads.nthreads()
 10
 ```
-<br>
 You can use ```--threads auto``` to start Julia with the number of threads available on the system:
 <br><br>
 --> Windows command prompt:
