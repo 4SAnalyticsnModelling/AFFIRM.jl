@@ -4,7 +4,6 @@ Alberta Farm Fertilizer Information Recommendation Manager (AFFIRM) has 3 concur
 
 ## Getting started with AFFIRM.jl
 **==> Install Julia Programming Language**
-<br>
 <br>[Getting started with Julia](https://docs.julialang.org/en/v1/manual/getting-started/)
 <br>
 **==> Setting up for parallel computing**
