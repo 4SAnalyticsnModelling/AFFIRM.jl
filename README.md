@@ -5,14 +5,18 @@ Alberta Farm Fertilizer Information Recommendation Manager (AFFIRM) has 3 concur
 ## Get started with AFFIRM.jl
 Install AFFIRM.jl
 ```julia
-using Pkg;
-Pkg.add(url = "https://github.com/4SAnalyticsnModelling/AFFIRM.jl");
+using Pkg
+Pkg.add(url = "https://github.com/4SAnalyticsnModelling/AFFIRM.jl")
+```
+or
+```julia
+]add "https://github.com/4SAnalyticsnModelling/AFFIRM.jl"
 ```
 Create AFFIRM.jl folders
 ```julia
-using AFFIRM;
-cd("your/project/folder");
-create_affirm();
+using AFFIRM
+cd("your/project/folder")
+create_affirm()
 ```
 ## AFFIRM.jl folder structure
 AFFIRM.jl folder structure
