@@ -37,7 +37,7 @@ julia> ]
 **==> Create AFFIRM.jl folders**
 ```julia
 julia> using AFFIRM
-julia> cd("your/project/folder")
+julia> cd("path/to/your/project/folder")
 julia> create_affirm()
 ```
 ## AFFIRM.jl folder structure
