@@ -304,11 +304,11 @@ C:\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads 10 (you c
 ```
 /Applications/Julia-[version].app/Contents/Resources/julia/bin/julia --threads 10 (you can put whatever the maximum number of threads your machine supports)
 ```
-Once your julia REPL is open, check the number of threads in your julia session by following command:
+Once Julia REPL is open, check the number of threads by following command:
 ```julia
-Threads.nthreads()
+>Julia Threads.nthreads()
+10
 ```
-You should be able to see the number of threads you chose (in this case 10) as the output.
 ## Helpful link
 [Getting started with Julia](https://docs.julialang.org/en/v1/manual/getting-started/)
 
