@@ -7,11 +7,11 @@ Alberta Farm Fertilizer Information Recommendation Manager (AFFIRM) has 3 concur
 <br>
 <br>[Getting started with Julia](https://docs.julialang.org/en/v1/manual/getting-started/)
 <br>
-<br> Setting up for parallel computing
+**==> Setting up for parallel computing**
 <br>
 <br>If you want to take advantage of Julia multithreading for parallel computations with AFFIRM.jl, start your Julia REPL as follows:
 <br>
-<br> For Windows - start Julia from command prompt as the following example:
+    --> For Windows - start Julia from command prompt as the following example:
 ```
 C:\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads 10 (you can put whatever the maximum number of threads your machine supports)
 ```
