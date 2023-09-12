@@ -67,9 +67,9 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
                 growing_season_precip_flag = ["Growing season precipitation - Low moisture condition", "Growing season precipitation - Intermediate moisture condition", "Growing season precipitation - Optimum moisture condition"]
             end
         else  # irrigation
-            growing_season_precip_optimum_moisture = round(b0irrig - 10.0 * b1irrig, digits = 0)
-            growing_season_precip_intermediate_moisture = round(b0irrig - 50.0 * b1irrig, digits = 0)
-            growing_season_precip_low_moisture = round(b0irrig - 90.0 * b1irrig, digits = 0)
+            growing_season_precip_optimum_moisture = round(b0irrig - 10.0f0 * b1irrig, digits = 0)
+            growing_season_precip_intermediate_moisture = round(b0irrig - 50.0f0 * b1irrig, digits = 0)
+            growing_season_precip_low_moisture = round(b0irrig - 90.0f0 * b1irrig, digits = 0)
             if sum(inp_my_irrig) > 0.0f0
                 growing_season_precip = vcat(inp_my_irrig, [growing_season_precip_low_moisture, growing_season_precip_intermediate_moisture, growing_season_precip_optimum_moisture])
                 growing_season_precip_flag = vcat(["Irrigation water amount - User input" for _ in 1:length(inp_my_irrig)], ["Irrigation water amount - Low moisture condition", "Irrigation water amount - Intermediate moisture condition", "Irrigation water amount - Optimum moisture condition"])
