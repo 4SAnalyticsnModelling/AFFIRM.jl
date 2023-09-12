@@ -4,7 +4,8 @@ Alberta Farm Fertilizer Information Recommendation Manager (AFFIRM) has 3 concur
 
 ## Getting started with AFFIRM.jl
 <br>Install Julia Programming Language
-[Getting started with Julia](https://docs.julialang.org/en/v1/manual/getting-started/)
+<br>
+<br>[Getting started with Julia](https://docs.julialang.org/en/v1/manual/getting-started/)
 <br>
 <br> Setting up for parallel computing
 If you want to take advantage of Julia multithreading for parallel computations with AFFIRM.jl, start your Julia REPL as follows:
