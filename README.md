@@ -286,8 +286,8 @@ The output variables are written in the default ```output/AFFIRM-batch-outputs.c
 - Soil EC (0-6" or 0-12") (meq/100g)
 - Crop
 - Irrigation
-- Growing season moisture flag => A description expressing whether it's a user input or long-term precipitation probability estimates representing Low, Intermediate or Optimum moisture conditions
-- Growing season precipitation (May-Aug) + irrigation (if any) (mm)  => A description expressing whether it's a user input or typical precipitation + irrigation estimates representing Low, Intermediate or Optimum irrigation levels
+- Growing season moisture flag => A description expressing whether it is a user input or long-term precipitation probability estimates representing Low, Intermediate or Optimum moisture conditions
+- Growing season precipitation (May-Aug) + irrigation (if any) (mm)  => A description expressing whether it is a user input or typical precipitation + irrigation estimates representing Low, Intermediate or Optimum irrigation levels
 - Nitrogen fertilizer product
 - Nitrogen fertilizer application timing
 - Nitrogen fertilizer application placement
