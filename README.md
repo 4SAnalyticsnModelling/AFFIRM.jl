@@ -57,7 +57,7 @@ The input variables are provided in the default ```input/AFFIRM-batch-inputs.csv
 - Range => Alberta range id; integer values ranging from 1 to 30
 - Meridian => Alberta meridian id; categorical variables: "W4", "W5" and "W6"
 - Soil organic matter (0-6")(%) => numerical variables in decimals
-- Soil texture => categorical variables represents by identifiers described below
+- Soil texture => categorical variables represented by identifiers described below
 - Spring soil moisture => categorical variables represented by identifiers described below
 - Soil pH (0-6" or 0-12") => numerical variables in decimals
 - Soil EC (0-6" or 0-12")(meq/100g) => numerical variables in decimals
