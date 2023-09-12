@@ -306,7 +306,7 @@ C:\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads 10 (you c
 ```
 Once Julia REPL is open, check the number of threads by following command:
 ```julia
->Julia Threads.nthreads()
+julia> Threads.nthreads()
 10
 ```
 ## Helpful link
