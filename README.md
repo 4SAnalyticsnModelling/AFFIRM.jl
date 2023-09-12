@@ -5,18 +5,19 @@ Alberta Farm Fertilizer Information Recommendation Manager (AFFIRM) has 3 concur
 ## Get started with AFFIRM.jl
 Install AFFIRM.jl
 ```julia
-using Pkg
-Pkg.add(url = "https://github.com/4SAnalyticsnModelling/AFFIRM.jl")
+julia> using Pkg
+julia> Pkg.add(url = "https://github.com/4SAnalyticsnModelling/AFFIRM.jl")
 ```
 or
 ```julia
-]add "https://github.com/4SAnalyticsnModelling/AFFIRM.jl"
+julia> ]
+(@v1.9) pkg> add "https://github.com/4SAnalyticsnModelling/AFFIRM.jl"
 ```
 Create AFFIRM.jl folders
 ```julia
-using AFFIRM
-cd("your/project/folder")
-create_affirm()
+julia> using AFFIRM
+julia> cd("your/project/folder")
+julia> create_affirm()
 ```
 ## AFFIRM.jl folder structure
 AFFIRM.jl folder structure
@@ -249,7 +250,7 @@ The composite simulations for the above numerical variables can be performed in 
 <br>
 ## Execute AFFIRM.jl batch runs
 ```julia
-include("src/runAFFIRM.jl")
+julia> include("src/runAFFIRM.jl")
 ```
 ## Understanding AFFIRM.jl outputs
 The output variables are written in the default ```output/AFFIRM-batch-outputs.csv``` file. The output variables in that file are listed below; visit [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) to understand these variables better.
