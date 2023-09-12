@@ -309,5 +309,7 @@ Once your julia REPL is open, check the number of threads in your julia session 
 Threads.nthreads()
 ```
 You should be able to see the number of threads you chose (in this case 10) as the output.
+## Helpful link
+[Getting started with Julia](https://docs.julialang.org/en/v1/manual/getting-started/)
 
 
