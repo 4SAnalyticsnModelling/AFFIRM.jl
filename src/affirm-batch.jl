@@ -4,6 +4,9 @@ using Distributed
 const git = Git.git()
 # Function to create AFFIRM folder environments
 function create_affirm()
+    """
+    This function creates all the folders for AFFIRM.jl runs at the user specified folder location. No argument needed
+    """
     run(`$git clone https://github.com/4SAnalyticsnModelling/AFFIRM-data`)
     for folder_ in ["data", "input", "output", "src"]
         mkdir(folder_)
@@ -18,6 +21,10 @@ function create_affirm()
 end
 # Function to import AFFIRM coefficients from config files in data folder
 function get_coefficients(data_file_path :: String = "../data/")
+    """
+    get_coefficients(data_file_path :: String = "../data/")
+    This function gets the coefficients for AFFIRM.jl model runs.
+    """
     for item in ["crop_name", "previous_crop", "previous_crop_yld_unit", "residue_management", "soil_zone", "n_source", "n_source_percent_n", "n_time", "n_place", "soil_texture", "spring_moisture_condition", "irrigation_flag", "wue", "epsilon", "nminus1", "crop_unit_conv_coef", "spring_soil_moisture", "b0ph", "b1ph", "b2ph", "phmax", "phmin", "b0ec", "b1ec", "b0precip", "b1precip", "soil_zone_id", "b0ag", "b0bg"]
         file_config = BSON.load(data_file_path * item * ".bson")[Symbol(item)]
         item_name = Symbol(item)
@@ -26,6 +33,10 @@ function get_coefficients(data_file_path :: String = "../data/")
 end
 # Function to run AFFIRM batch script, process the inputs and write the outputs
 function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.csv", output_file_path :: String = "../output/AFFIRM-batch-outputs.csv", output_dir :: String = "../output/")
+    """
+    run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.csv", output_file_path :: String = "../output/AFFIRM-batch-outputs.csv", output_dir :: String = "../output/")
+    This function executes the AFFIRM.jl model runs.
+    """
     get_coefficients()
     try
         map(file_ -> rm(output_dir * file_, force = true), readdir(output_dir))
