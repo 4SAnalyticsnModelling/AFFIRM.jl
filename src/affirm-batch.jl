@@ -7,6 +7,10 @@ function create_affirm()
     """
     This function creates all the folders for AFFIRM.jl runs at the user specified folder location. No argument needed
     """
+    try
+        rm("AFFIRM-data", force = true, recursive = true)
+    catch
+    end
     run(`$git clone https://github.com/4SAnalyticsnModelling/AFFIRM-data`)
     for folder_ in ["data", "input", "output", "src"]
         try
