@@ -35,7 +35,7 @@ C:\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads auto
 /Applications/Julia-[version].app/Contents/Resources/julia/bin/julia --threads auto
 ```
 **==> Install AFFIRM.jl**
-```julia
+```julia-repl
 julia> using Pkg
 julia> Pkg.add(url = "https://github.com/4SAnalyticsnModelling/AFFIRM.jl")
 ```
