@@ -290,7 +290,7 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
                 fetch(soil_texture_par)
             end
         end
-        println("AFFIRM.jl model run is completed successfully, please check out your output folder to see the model outputs. Thank you for using AFFIRM.jl!!")
+        println("Congratulations!! AFFIRM.jl model run has completed successfully! Please check out the model outputs in the output folder. Thank you for using AFFIRM.jl!!")
     catch
         println("Oops...something went wrong!! Please check your input file to make sure the input formats are correct. With the right inputs please try again! Good luck for your next run!")
     end
