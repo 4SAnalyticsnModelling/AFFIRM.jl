@@ -1,6 +1,11 @@
 using OffsetArrays
 using Distributions
-# Function for formatting the outputs
+"""
+```julia
+writeoutputs(xs...)
+```
+This function organizes and writes the outputs in order. ```xs...``` represents any sets of arguments.
+"""
 function writeoutputs(xs...)
     j = ""
     if length(xs) > 1 xs = copy(vcat(xs...)) end
@@ -14,7 +19,12 @@ function writeoutputs(xs...)
     outputs_ :: String = replace(replace(replace(j * "\n", r"\[|\]" => ""), r"\.0\,|\.00\," => ","), r"\.0\n|\.00\n" => "\n")
     return outputs_
 end
-# Function for Monte-Carlo or Step-wise simulations
+"""
+```julia
+get_distribution(text_in)
+```
+This function organizes the inputs for composite simulations (e.g. Monte-Carlo or Step-wise) for numerical variables by using user selections.
+"""
 function get_distribution(text_in)
     line = split(text_in, "|")
     if length(line) > 1
@@ -37,7 +47,12 @@ function get_distribution(text_in)
     end
     return round.(out_arr, digits = 2)
 end
-# Function for combineds simulations for categorical variables
+"""
+```julia
+get_combined_simulation(text_in)
+```
+This function organizes the inputs for composite simulations for categorical variables by using user selections.
+"""
 function get_combined_simulation(text_in)
     line = split(text_in, "|")
     out_arr = parse.(Int, line)
