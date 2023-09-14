@@ -2,11 +2,13 @@ using Git
 using BSON
 using Distributed
 const git = Git.git()
-# Function to create AFFIRM folder environments
+"""
+```julia
+create_affirm()
+```
+This function creates all the folders for AFFIRM.jl runs at the user specified folder location. No argument needed
+"""
 function create_affirm()
-    """
-    This function creates all the folders for AFFIRM.jl runs at the user specified folder location. No argument needed
-    """
     try
         rm("AFFIRM-data", force = true, recursive = true)
     catch
@@ -27,24 +29,26 @@ function create_affirm()
     end
     rm("AFFIRM-data", force = true, recursive = true)
 end
-# Function to import AFFIRM coefficients from config files in data folder
+"""
+```julia
+get_coefficients(data_file_path :: String = "../data/")
+```
+This function gets the coefficients for AFFIRM.jl model runs.
+"""
 function get_coefficients(data_file_path :: String = "../data/")
-    """
-    get_coefficients(data_file_path :: String = "../data/")
-    This function gets the coefficients for AFFIRM.jl model runs.
-    """
     for item in ["crop_name", "previous_crop", "previous_crop_yld_unit", "residue_management", "soil_zone", "n_source", "n_source_percent_n", "n_time", "n_place", "soil_texture", "spring_moisture_condition", "irrigation_flag", "wue", "epsilon", "nminus1", "crop_unit_conv_coef", "spring_soil_moisture", "b0ph", "b1ph", "b2ph", "phmax", "phmin", "b0ec", "b1ec", "b0precip", "b1precip", "soil_zone_id", "b0ag", "b0bg"]
         file_config = BSON.load(data_file_path * item * ".bson")[Symbol(item)]
         item_name = Symbol(item)
         @eval (const ($item_name) = ($file_config))
     end
 end
-# Function to run AFFIRM batch script, process the inputs and write the outputs
+"""
+```julia
+run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.csv", output_file_path :: String = "../output/AFFIRM-batch-outputs.csv", output_dir :: String = "../output/")
+```
+This function executes the AFFIRM.jl model runs.
+"""
 function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.csv", output_file_path :: String = "../output/AFFIRM-batch-outputs.csv", output_dir :: String = "../output/")
-    """
-    run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.csv", output_file_path :: String = "../output/AFFIRM-batch-outputs.csv", output_dir :: String = "../output/")
-    This function executes the AFFIRM.jl model runs.
-    """
     get_coefficients()
     try
         map(file_ -> rm(output_dir * file_, force = true), readdir(output_dir))
