@@ -9,7 +9,7 @@ function create_affirm()
     """
     run(`$git clone https://github.com/4SAnalyticsnModelling/AFFIRM-data`)
     for folder_ in ["data", "input", "output", "src"]
-        mkdir(folder_)
+        mkdir(folder_, force = true)
         if folder_ != "output"
             folder_to_copy_from = "AFFIRM-data/" * folder_
             for file_ in readdir(folder_to_copy_from)
