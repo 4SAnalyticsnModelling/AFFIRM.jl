@@ -28,7 +28,7 @@ Alternatively, you can use ```--threads auto``` to start Julia with the number o
 <br><br>
 --> Windows command prompt:
 ```
-C:\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads auto
+C:\Users\[your username]\Local\AppData\Programs\Julia-[version]\bin\julia --threads auto
 ```
 <br>--> MacOS terminal:
 ```
