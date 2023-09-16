@@ -73,8 +73,8 @@ The input variables are provided in the default ```input/AFFIRM-batch-inputs.csv
 - Soil EC (0-6" or 0-12")(meq/100g) => numerical variables in decimals
 - Crop => categorical variables represented by identifiers described below
 - Irrigation => categorical variables represented by identifiers described below
-- Growing season precipitation (May-Aug)(mm) => numerical variables in decimals or as integers
-- Irrigation water amount, if irrigated (mm) => numerical variables in decimals or as integers
+- Growing season precipitation (May-Aug)(mm) => numerical variables in decimals or as integers; note: this value is only required if the user has a known value for this parameter. Otherwise leave this input as blank. AFFIRM.jl will estimate the value for this parameter from long-term precipitation probability distributions.
+- Irrigation water amount, if irrigated (mm) => numerical variables in decimals or as integers; note: this value is only required if the user has a known value for this parameter. Otherwise leave this input as blank. AFFIRM.jl will use typical default value for this parameter.
 - Nitrogen fertilizer product => categorical variables represented by identifiers described below
 - Nitrogen fertilizer application timing => categorical variables represented by identifiers described below
 - Nitrogen fertilizer application placement => categorical variables represented by identifiers described below
