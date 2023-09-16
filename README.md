@@ -42,7 +42,7 @@ julia> Pkg.add(url = "https://github.com/4SAnalyticsnModelling/AFFIRM.jl")
 or
 ```julia
 julia> ]
-(@v1.9) pkg> add "https://github.com/4SAnalyticsnModelling/AFFIRM.jl"
+pkg> add "https://github.com/4SAnalyticsnModelling/AFFIRM.jl"
 ```
 **==> Create AFFIRM.jl folders**
 ```julia
