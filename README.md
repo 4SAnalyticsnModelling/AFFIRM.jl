@@ -13,7 +13,7 @@ Alberta Farm Fertilizer Information Recommendation Manager (AFFIRM) has 3 concur
 <br><br>
 --> Windows command prompt:
 ```
-C:\Users\[your username]\Local\App\Julia-[version]\bin\julia --threads 10
+C:\Users\[your username]\Local\AppData\Programs\Julia-[version]\bin\julia --threads 10
 ```
 <br>--> MacOS terminal:
 ```
