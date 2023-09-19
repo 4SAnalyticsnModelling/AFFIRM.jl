@@ -70,7 +70,7 @@ The input variables are provided in the default ```input/AFFIRM-batch-inputs.csv
 - Soil texture => categorical variables represented by identifiers described below
 - Spring soil moisture => categorical variables represented by identifiers described below
 - Soil pH (0-6" or 0-12") => numerical variables in decimals
-- Soil EC (0-6" or 0-12")(meq/100g) => numerical variables in decimals
+- Soil EC (0-6" or 0-12")(mS/cm) => numerical variables in decimals
 - Crop => categorical variables represented by identifiers described below
 - Irrigation => categorical variables represented by identifiers described below
 - Growing season precipitation (May-Aug)(mm) => numerical variables in decimals or as integers; note: this value is only required if the user has a known value for this parameter. Otherwise leave this input as blank. AFFIRM.jl will estimate the value for this parameter from long-term precipitation probability distributions.
@@ -251,7 +251,7 @@ Composite simulations are also allowed for the following numerical variables:
 ```
 - Soil organic matter (0-6")(%)
 - Soil pH (0-6" or 0-12")
-- Soil EC (0-6" or 0-12")(meq/100g)
+- Soil EC (0-6" or 0-12")(mS/cm)
 - Growing season precipitation (May-Aug)(mm)
 - Irrigation water amount, if irrigated (mm)
 - Soil test nitrogen (0-24") (lb N/ac) => numerical variables in decimals
@@ -293,7 +293,7 @@ The output variables are written in the default ```output/AFFIRM-batch-outputs.c
 - Soil texture
 - Spring soil moisture
 - Soil pH (0-6" or 0-12")
-- Soil EC (0-6" or 0-12") (meq/100g)
+- Soil EC (0-6" or 0-12") (mS/cm)
 - Crop
 - Irrigation
 - Growing season moisture flag => A description expressing whether it is a user input or long-term precipitation probability estimates representing Low, Intermediate or Optimum moisture conditions
