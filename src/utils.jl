@@ -1,5 +1,3 @@
-using OffsetArrays
-using Distributions
 """
 ```julia
 writeoutputs(xs...)

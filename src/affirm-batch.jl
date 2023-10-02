@@ -1,7 +1,3 @@
-using Git
-using BSON
-using Distributed
-const git = Git.git()
 """
 ```julia
 create_affirm()
