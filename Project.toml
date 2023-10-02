@@ -1,6 +1,6 @@
 name = "AFFIRM"
 uuid = "3d7cecb0-ee69-4e66-b737-28eb5d3942ba"
-authors = ["Symon <59005260+4SAnalyticsnModelling@users.noreply.github.com>"]
+authors = ["Symon <symon.mezbahuddin@4sanalyticsnmodelling.com>"]
 version = "0.1.0"
 
 [deps]
