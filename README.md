@@ -63,7 +63,7 @@ julia> create_affirm()
 ## Understanding AFFIRM.jl input variables
 The input variables are provided in the default ```input/AFFIRM-batch-inputs.csv``` file. The input variables in that file with their corresponding data types are listed below; visit [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) to understand these variables better.
 ```
-- Index => Unique ID for each scenario in each row of the input file; integer values
+- Index => Unique ID for each scenario (row) of the input file; integer values
 - Township => Alberta township id; integer values ranging from 1 to 126
 - Range => Alberta range id; integer values ranging from 1 to 30
 - Meridian => Alberta meridian id; categorical variables: "W4", "W5" and "W6"
