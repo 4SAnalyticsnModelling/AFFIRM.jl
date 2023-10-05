@@ -284,7 +284,7 @@ The composite simulations for the above numerical variables can be performed in 
 julia> include("src/runAFFIRM.jl")
 ```
 ## Understanding AFFIRM.jl outputs
-The output variables are written in the default ```output/AFFIRM-batch-outputs.csv``` file. The output variables in that file are listed below; visit [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) to understand these variables better. Please check the ```output/AFFIRM-batch-logfile``` file for any important warning message generated during the AFFIRM.jl execution. 
+The output variables are written in the default ```output/AFFIRM-batch-outputs.csv``` file. The output variables in that file are listed below; visit [AFFIRM-R](https://mezbahu.shinyapps.io/AFFIRM_R_version_yield_response_nitrogen/) to understand these variables better. Please check the ```output/AFFIRM-batch-logfile``` file for any important warning message(s) generated during the AFFIRM.jl execution. 
 ```
 - Index
 - Township
