@@ -56,8 +56,8 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
     end
     input_f = open(input_file_path, "r")
     line_ = readline(input_f)
-    line_count = 0
     try
+        line_count = 0
         while !eof(input_f)
             line_count += 1
             line_ = readline(input_f)
