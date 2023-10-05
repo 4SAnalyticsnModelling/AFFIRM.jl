@@ -21,7 +21,7 @@ C:\Users\[your username]\Local\AppData\Programs\Julia-[version]\bin\julia --thre
 ```
 Once Julia REPL is open, check the number of threads by following command:
 ```julia
-julia> Threads.nthreads()
+$${\color{green}julia>}$$ Threads.nthreads()
 10
 ```
 Alternatively, you can use ```--threads auto``` to start Julia with the number of threads available on the system:
