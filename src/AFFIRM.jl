@@ -2,12 +2,14 @@ module AFFIRM
 
 using Git
 using BSON
-using Distributed
 using OffsetArrays
+using StaticArrays
 using Distributions
+using LoopVectorization
+
 const git = Git.git()
 
-const residue_management_multiplyer = [1.0f0, 0.0f0, 0.0f0]
+const residue_management_multiplyer = SArray{Tuple{3,}, Float32}([1.0f0, 0.0f0, 0.0f0])
 const b0irrig = 519.83f0
 const b1irrig = 1.56f0
 const low_n_rate = 0.0f0

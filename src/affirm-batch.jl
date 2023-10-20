@@ -34,8 +34,11 @@ This function gets the coefficients for AFFIRM.jl model runs.
 function get_coefficients(data_file_path :: String = "../data/")
     for item in ["crop_name", "previous_crop", "previous_crop_yld_unit", "residue_management", "soil_zone", "n_source", "n_source_percent_n", "n_time", "n_place", "soil_texture", "spring_moisture_condition", "irrigation_flag", "wue", "epsilon", "nminus1", "crop_unit_conv_coef", "spring_soil_moisture", "b0ph", "b1ph", "b2ph", "phmax", "phmin", "b0ec", "b1ec", "b0precip", "b1precip", "soil_zone_id", "b0ag", "b0bg"]
         file_config = BSON.load(data_file_path * item * ".bson")[Symbol(item)]
+        if length(file_config) <= 100 && !occursin("OffsetArray", string(typeof(file_config)))
+            file_config = SArray{Tuple{size(file_config)...}, eltype(file_config)}(file_config)
+        end
         item_name = Symbol(item)
-        @eval (const ($item_name) = ($file_config))
+        @eval (($item_name) = ($file_config))
     end
 end
 """
@@ -57,7 +60,7 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
     catch
     end
 
-    Base.printstyled("\nPreparing ", color = :yellow, bold = true)
+    Base.printstyled("\nPreparing ", color = :green, bold = true)
     print("AFFIRM.jl batch runs...\n")
 
     if line_count_ == 0
@@ -70,17 +73,21 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
         line_count_ = line_count_ - 1
     end
 
-    write_f = open(output_file_path, "a")
-    write(write_f, writeoutputs("Index", "Township", "Range", "Meridian", "Soil Zone", "Soil organic matter (0-6\") (%)", "Soil texture, Spring soil moisture", "Soil pH (0-6\" or 0-12\")", "Soil EC (0-6\" or 0-12\") (mS/cm)", "Crop", "Irrigation", "Growing season moisture flag", "Growing season precipitation (May-Aug) + irrigation (if any) (mm)", "Nitrogen fertilizer product", "Nitrogen fertilizer application timing", "Nitrogen fertilizer application placement", "Soil test nitrogen (0-24\") (lb N/ac)", "Previous crop", "Previous crop yield", "Previous crop yield unit", "Residue management", "Crop available nitrogen from applied manure (lb N/ac)", "Expected crop price (\$/bu)", "Fertilizer price (\$/tonne)", "User chosen investment ratio", "Estimated N release from N mineralization over the growing season (lb N/ac)", "N credit from previous crop residue (lb N/ac)", "Total plant available nitrogen from soil (lb N/ac)", "Fertilizer N application rate (lb N/ac)", "Predicted crop yield (bu/ac)", "Predicted yield increase (bu/ac)", "Added yield increase (bu/ac)", "Estimated revenue from fertilizer N (\$/ac)", "Marginal return or Gross margin change (\$/ac)", "Total cost of fertilizer N (\$/ac)", "Marginal cost of fertilizer N (\$/ac)", "Estimated Investment Ratio", "Recommended?"))
+    write_f = open(output_file_path, "w")
+    println(write_f, writeoutputs("Index", "Township", "Range", "Meridian", "Soil Zone", "Soil organic matter (0-6\") (%)", "Soil texture", "Spring soil moisture", "Soil pH (0-6\" or 0-12\")", "Soil EC (0-6\" or 0-12\") (mS/cm)", "Crop", "Irrigation", "Growing season moisture flag", "Growing season precipitation (May-Aug) + irrigation (if any) (mm)", "Nitrogen fertilizer product", "Nitrogen fertilizer application timing", "Nitrogen fertilizer application placement", "Soil test nitrogen (0-24\") (lb N/ac)", "Previous crop", "Previous crop yield", "Previous crop yield unit", "Residue management", "Crop available nitrogen from applied manure (lb N/ac)", "Expected crop price (\$/bu)", "Fertilizer price (\$/tonne)", "User chosen investment ratio", "Estimated N release from N mineralization over the growing season (lb N/ac)", "N credit from previous crop residue (lb N/ac)", "Total plant available nitrogen from soil (lb N/ac)", "Fertilizer N application rate (lb N/ac)", "Predicted crop yield (bu/ac)", "Predicted yield increase (bu/ac)", "Added yield increase (bu/ac)", "Estimated revenue from fertilizer N (\$/ac)", "Marginal return or Gross margin change (\$/ac)", "Total cost of fertilizer N (\$/ac)", "Marginal cost of fertilizer N (\$/ac)", "Estimated Investment Ratio", "Recommended?"))
     close(write_f)
+
+    logf_ = open(output_dir * "AFFIRM-batch-logfile", "w")
+    close(logf_)
 
     input_f = open(input_file_path, "r")
     line_ = readline(input_f)
 
-    logf_ = open(output_dir * "AFFIRM-batch-logfile", "a")
-
     Base.printstyled("\nProcessing ", color = :green, bold = true)
     print("AFFIRM.jl batch runs...\n")
+
+    write_f = open(output_file_path, "a")
+    logf_ = open(output_dir * "AFFIRM-batch-logfile", "w")
 
     while !eof(input_f)
         line_count += 1
@@ -112,7 +119,7 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
             inp_res_mgmt_flg = get_combined_simulation(line[21])
             inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio = get_distribution.(line[22:25])   
 
-            if soil_zone_id[inp_township, inp_range, inp_meridian] > 0
+            if inp_township in axes(soil_zone_id, 1) && inp_range in axes(soil_zone_id, 2) && inp_meridian in axes(soil_zone_id, 3) && soil_zone_id[inp_township, inp_range, inp_meridian] > 0
                 soil_zone_ = soil_zone[soil_zone_id[inp_township, inp_range, inp_meridian]]
 
                 if inp_irrig_flg == 1 # no irrigation / dryland
@@ -138,238 +145,184 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
                         growing_season_precip_flag = ["Irrigation water amount - Low moisture condition", "Irrigation water amount - Intermediate moisture condition", "Irrigation water amount - Optimum moisture condition"]
                     end
                 end
+
+                growing_season_precip = SArray{Tuple{length(growing_season_precip),}, eltype(growing_season_precip)}(growing_season_precip)
+                growing_season_precip_flag = SArray{Tuple{length(growing_season_precip_flag),}, eltype(growing_season_precip_flag)}(growing_season_precip_flag)
+
                 conv_yld_kgha_buac = crop_unit_conv_coef[inp_current_crop] * 0.000405f0
-        
-                for inp_soil_texture0 in Distributed.splitrange(1, length(inp_soil_texture), Threads.nthreads())
-                    soil_texture_par = Threads.@spawn begin 
-                        for inp_soil_texture in inp_soil_texture[inp_soil_texture0]
-                            for inp_spring_soil_moisture0 in Distributed.splitrange(1, length(inp_spring_soil_moisture), Threads.nthreads())
-                                spring_moisture_par = Threads.@spawn begin
-                                    for inp_spring_soil_moisture in inp_spring_soil_moisture[inp_spring_soil_moisture0]
-                                        spring_soil_water_content = spring_soil_moisture[inp_spring_soil_moisture, inp_soil_texture]
-                                        growing_season_precip_list = growing_season_precip
-                                        for growing_season_precip0 in Distributed.splitrange(1, length(growing_season_precip), Threads.nthreads())
-                                            growing_season_precip_par = Threads.@spawn begin       
-                                                for growing_season_precip in growing_season_precip_list[growing_season_precip0]
-                                                    total_plant_available_moisture = growing_season_precip + spring_soil_water_content
-                                                    growing_season_precip_id = findall(q -> q == growing_season_precip, growing_season_precip_list)
-                                                    growing_season_precip_flag_ = growing_season_precip_flag[growing_season_precip_id]
-                                                    for inp_soil_ph0 in Distributed.splitrange(1, length(inp_soil_ph), Threads.nthreads())
-                                                        soil_ph_par = Threads.@spawn begin
-                                                            for inp_soil_ph in inp_soil_ph[inp_soil_ph0]
-                                                                soil_ph = min(phmax[inp_current_crop], max(phmin[inp_current_crop], inp_soil_ph))
-                                                                ph_adjust = max(0.0f0, min(1.0f0, b0ph[inp_current_crop] + b1ph[inp_current_crop] * soil_ph + b2ph[inp_current_crop] * soil_ph ^ 2.0f0))
-                                                                for inp_soil_ec0 in Distributed.splitrange(1, length(inp_soil_ec), Threads.nthreads())
-                                                                    soil_ec_par = Threads.@spawn begin
-                                                                        for inp_soil_ec in inp_soil_ec[inp_soil_ec0]
-                                                                            ec_adjust = max(0.0f0, min(1.0f0, b0ec[inp_current_crop] + b1ec[inp_current_crop] * inp_soil_ec))
-                                                                            for inp_som0 in Distributed.splitrange(1, length(inp_som), Threads.nthreads())
-                                                                                som_par = Threads.@spawn begin
-                                                                                    for inp_som in inp_som[inp_som0]
-                                                                                        enr = round((20.6f0 + 13.2f0 * inp_som - 0.1777f0 * inp_som ^ 2.0f0) / kg_ha_n_lb_ac, digits = 0)
-                                                                                        for inp_prev_crop_yld0 in Distributed.splitrange(1, length(inp_prev_crop_yld), Threads.nthreads())
-                                                                                            prev_crop_yld_par = Threads.@spawn begin
-                                                                                                for inp_prev_crop_yld in inp_prev_crop_yld[inp_prev_crop_yld0]
-                                                                                                    for inp_res_mgmt_flg0 in Distributed.splitrange(1, length(inp_res_mgmt_flg), Threads.nthreads())
-                                                                                                        res_mgmt_flg_par = Threads.@spawn begin
-                                                                                                            for inp_res_mgmt_flg in inp_res_mgmt_flg[inp_res_mgmt_flg0]
-                                                                                                                residue_n_credit = round(inp_prev_crop_yld * (residue_management_multiplyer[inp_res_mgmt_flg] * b0ag[inp_prev_crop, inp_prev_crop_yld_unit] + b0bg[inp_prev_crop, inp_prev_crop_yld_unit]), digits = 0)
-                                                                                                                for inp_soil_test_n0 in Distributed.splitrange(1, length(inp_soil_test_n), Threads.nthreads())
-                                                                                                                    soil_test_n_par = Threads.@spawn begin
-                                                                                                                        for inp_soil_test_n in inp_soil_test_n[inp_soil_test_n0]
-                                                                                                                            for inp_manure_n0 in Distributed.splitrange(1, length(inp_manure_n), Threads.nthreads())
-                                                                                                                                manure_n_par = Threads.@spawn begin
-                                                                                                                                    for inp_manure_n in inp_manure_n[inp_manure_n0]
-                                                                                                                                        plant_available_soil_n = round(enr + residue_n_credit + inp_soil_test_n + inp_manure_n, digits = 0)
-                                                                                                                                        for inp_n_time0 in Distributed.splitrange(1, length(inp_n_time), Threads.nthreads())
-                                                                                                                                            n_time_par = Threads.@spawn begin
-                                                                                                                                                for inp_n_time in inp_n_time[inp_n_time0]
-                                                                                                                                                    for inp_n_place0 in Distributed.splitrange(1, length(inp_n_place), Threads.nthreads())
-                                                                                                                                                        n_place_par = Threads.@spawn begin
-                                                                                                                                                            for inp_n_place in inp_n_place[inp_n_place0]
-                                                                                                                                                                for inp_crop_price0 in Distributed.splitrange(1, length(inp_crop_price), Threads.nthreads())
-                                                                                                                                                                    crop_price_par = Threads.@spawn begin
-                                                                                                                                                                        for inp_crop_price in inp_crop_price[inp_crop_price0]
-                                                                                                                                                                            for inp_fertilizer_price0 in Distributed.splitrange(1, length(inp_fertilizer_price), Threads.nthreads())
-                                                                                                                                                                                fertilizer_price_par = Threads.@spawn begin
-                                                                                                                                                                                    for inp_fertilizer_price in inp_fertilizer_price[inp_fertilizer_price0]
-                                                                                                                                                                                        for inp_investment_ratio0 in Distributed.splitrange(1, length(inp_investment_ratio), Threads.nthreads())
-                                                                                                                                                                                            investment_ratio_par = Threads.@spawn begin
-                                                                                                                                                                                                for inp_investment_ratio in inp_investment_ratio[inp_investment_ratio0]
-                                                                                                                                                                                                    high_n_rate = ns_max - plant_available_soil_n
-                                                                                                                                                                                                    if rem(high_n_rate, n_rate_step_size) > 0.0f0
-                                                                                                                                                                                                        high_n_rate = n_rate_step_size * (1.0f0 + div(high_n_rate, 10.0f0))
-                                                                                                                                                                                                    end
-                                                                                                                                                                                                    predicted_crop_yield_previous_n_rate = 0
-                                                                                                                                                                                                    estimated_revenue_from_fertilizer_n_previous_n_rate = 0.0f0
-                                                                                                                                                                                                    predicted_yield_increase = 0
-                                                                                                                                                                                                    marginal_return = 0
-                                                                                                                                                                                                    total_cost_of_fertilizer_n_previous_n_rate = 0.0f0
-                                                                                                                                                                                                    estimated_investment_ratio_previous_n_rate = 0.0f0
-                                                                                                                                                                                                    recommend_flag = ""
-                                                                                                                                                                                                    recommend_flag_set = 0
-                                                                                                                                                                                                    for n_rate in low_n_rate:n_rate_step_size:high_n_rate
-                                                                                                                                                                                                        plant_available_total_n = plant_available_soil_n + n_rate
-                                                                                                                                                                                                        predicted_crop_yield = round(ph_adjust * ec_adjust * conv_yld_kgha_buac * wue[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] * total_plant_available_moisture * (1.0f0 - 10.0f0 ^ (-epsilon[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] * plant_available_total_n * kg_ha_n_lb_ac * (wue[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] * total_plant_available_moisture) ^ nminus1[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop])), digits = 2)
-                                                                                                                                                                                                        if n_rate == low_n_rate 
-                                                                                                                                                                                                            predicted_yield_increase = 0
-                                                                                                                                                                                                            added_yield_increase = 0
-                                                                                                                                                                                                        else
-                                                                                                                                                                                                            added_yield_increase = round(predicted_crop_yield - predicted_crop_yield_previous_n_rate, digits = 2)
-                                                                                                                                                                                                            predicted_yield_increase += round(added_yield_increase, digits = 2)
-                                                                                                                                                                                                        end
-                                                                                                                                                                                                        estimated_revenue_from_fertilizer_n = round(predicted_yield_increase * inp_crop_price, digits = 2)
-                                                                                                                                                                                                        if n_rate == low_n_rate
-                                                                                                                                                                                                            marginal_return = 0
-                                                                                                                                                                                                        else
-                                                                                                                                                                                                            marginal_return = round(estimated_revenue_from_fertilizer_n - estimated_revenue_from_fertilizer_n_previous_n_rate, digits = 1)
-                                                                                                                                                                                                        end
-                                                                                                                                                                                                        total_cost_of_fertilizer_n = round(n_rate * inp_fertilizer_price / 1000.0f0 * 0.4536f0 / (n_source_percent_n[inp_n_source] / 100.0f0), digits = 2)
-                                                                                                                                                                                                        marginal_cost_of_fertilizer_n = round(total_cost_of_fertilizer_n - total_cost_of_fertilizer_n_previous_n_rate, digits = 2)
-                                                                                                                                                                                                        if n_rate > low_n_rate
-                                                                                                                                                                                                            estimated_investment_ratio = round(marginal_return / marginal_cost_of_fertilizer_n, digits = 1)
-                                                                                                                                                                                                        else
-                                                                                                                                                                                                            estimated_investment_ratio = 0.0f0
-                                                                                                                                                                                                        end
-                                                                                                                                                                                                        if n_rate > low_n_rate + n_rate_step_size && recommend_flag_set == 0
-                                                                                                                                                                                                            if estimated_investment_ratio <= round(inp_investment_ratio, digits = 1) && estimated_investment_ratio_previous_n_rate > round(inp_investment_ratio, digits = 1)
-                                                                                                                                                                                                                recommend_flag = "Yes"
-                                                                                                                                                                                                                recommend_flag_set = 1
-                                                                                                                                                                                                            else
-                                                                                                                                                                                                                recommend_flag = ""
-                                                                                                                                                                                                            end
-                                                                                                                                                                                                        else
-                                                                                                                                                                                                            recommend_flag = ""
-                                                                                                                                                                                                        end
-                                                                                                                                                                                                        predicted_crop_yield_previous_n_rate = predicted_crop_yield
-                                                                                                                                                                                                        estimated_revenue_from_fertilizer_n_previous_n_rate = estimated_revenue_from_fertilizer_n
-                                                                                                                                                                                                        total_cost_of_fertilizer_n_previous_n_rate = total_cost_of_fertilizer_n
-                                                                                                                                                                                                        estimated_investment_ratio_previous_n_rate = estimated_investment_ratio
-                                                                                                                                                                                                        predicted_crop_yield = round(predicted_crop_yield, digits = 1)
-                                                                                                                                                                                                        predicted_yield_increase = round(predicted_yield_increase, digits = 1)
-                                                                                                                                                                                                        added_yield_increase = round(added_yield_increase, digits = 1)
-                                                                                                                                                                                                        estimated_revenue_from_fertilizer_n = round(estimated_revenue_from_fertilizer_n, digits = 1)
-                                                                                                                                                                                                        marginal_return = round(marginal_return, digits = 1)
-                                                                                                                                                                                                        total_cost_of_fertilizer_n = round(total_cost_of_fertilizer_n, digits = 1)
-                                                                                                                                                                                                        marginal_cost_of_fertilizer_n = round(marginal_cost_of_fertilizer_n, digits = 1)
-                                                                                                                                                                                                        write_f = open(output_file_path, "a")
-                                                                                                                                                                                                        if added_yield_increase >= 0.5f0
-                                                                                                                                                                                                            if recommend_flag == "Yes"
-                                                                                                                                                                                                                if n_rate > low_n_rate
-                                                                                                                                                                                                                    if wue[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] == 0.0f0 && epsilon[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] == 0.0f0 && nminus1[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] == 0.0f0
-                                                                                                                                                                                                                        comments_ = "Yield response information is not available for either the legal land location or the combination of fertilizer management that you have chosen for your field in this scenario; please try with a different combination"
-                                                                                                                                                                                                                        write(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, soil_texture[inp_soil_texture], spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, crop_name[inp_current_crop], irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, n_source[inp_n_source], n_time[inp_n_time], n_place[inp_n_place], inp_soil_test_n, previous_crop[inp_prev_crop], inp_prev_crop_yld, previous_crop_yld_unit[inp_prev_crop_yld_unit], residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate, predicted_crop_yield, predicted_yield_increase, added_yield_increase, estimated_revenue_from_fertilizer_n, marginal_return, total_cost_of_fertilizer_n, marginal_cost_of_fertilizer_n, estimated_investment_ratio, recommend_flag, comments_))
-                                                                                                                                                                                                                    else
-                                                                                                                                                                                                                        write(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, soil_texture[inp_soil_texture], spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, crop_name[inp_current_crop], irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, n_source[inp_n_source], n_time[inp_n_time], n_place[inp_n_place], inp_soil_test_n, previous_crop[inp_prev_crop], inp_prev_crop_yld, previous_crop_yld_unit[inp_prev_crop_yld_unit], residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate, predicted_crop_yield, predicted_yield_increase, added_yield_increase, estimated_revenue_from_fertilizer_n, marginal_return, total_cost_of_fertilizer_n, marginal_cost_of_fertilizer_n, estimated_investment_ratio, recommend_flag))
-                                                                                                                                                                                                                    end
-                                                                                                                                                                                                                else
-                                                                                                                                                                                                                    if wue[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] == 0.0f0 && epsilon[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] == 0.0f0 && nminus1[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] == 0.0f0
-                                                                                                                                                                                                                        comments_ = "Yield response information is not available for either the legal land location or the combination of fertilizer management that you have chosen for your field in this scenario; please try with a different combination"
-                                                                                                                                                                                                                        write(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, soil_texture[inp_soil_texture], spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, crop_name[inp_current_crop], irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, n_source[inp_n_source], n_time[inp_n_time], n_place[inp_n_place], inp_soil_test_n, previous_crop[inp_prev_crop], inp_prev_crop_yld, previous_crop_yld_unit[inp_prev_crop_yld_unit], residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate, predicted_crop_yield, comments_))
-                                                                                                                                                                                                                    else
-                                                                                                                                                                                                                        write(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, soil_texture[inp_soil_texture], spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, crop_name[inp_current_crop], irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, n_source[inp_n_source], n_time[inp_n_time], n_place[inp_n_place], inp_soil_test_n, previous_crop[inp_prev_crop], inp_prev_crop_yld, previous_crop_yld_unit[inp_prev_crop_yld_unit], residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate, predicted_crop_yield))
-                                                                                                                                                                                                                    end
-                                                                                                                                                                                                                end
-                                                                                                                                                                                                            else
-                                                                                                                                                                                                                if n_rate > low_n_rate
-                                                                                                                                                                                                                    if wue[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] == 0.0f0 && epsilon[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] == 0.0f0 && nminus1[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] == 0.0f0
-                                                                                                                                                                                                                        comments_ = "Yield response information is not available for either the legal land location or the combination of fertilizer management that you have chosen for your field in this scenario; please try with a different combination"
-                                                                                                                                                                                                                        write(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, soil_texture[inp_soil_texture], spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, crop_name[inp_current_crop], irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, n_source[inp_n_source], n_time[inp_n_time], n_place[inp_n_place], inp_soil_test_n, previous_crop[inp_prev_crop], inp_prev_crop_yld, previous_crop_yld_unit[inp_prev_crop_yld_unit], residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate, predicted_crop_yield, predicted_yield_increase, added_yield_increase, estimated_revenue_from_fertilizer_n, marginal_return, total_cost_of_fertilizer_n, marginal_cost_of_fertilizer_n, estimated_investment_ratio, comments_))
-                                                                                                                                                                                                                    else
-                                                                                                                                                                                                                        write(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, soil_texture[inp_soil_texture], spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, crop_name[inp_current_crop], irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, n_source[inp_n_source], n_time[inp_n_time], n_place[inp_n_place], inp_soil_test_n, previous_crop[inp_prev_crop], inp_prev_crop_yld, previous_crop_yld_unit[inp_prev_crop_yld_unit], residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate, predicted_crop_yield, predicted_yield_increase, added_yield_increase, estimated_revenue_from_fertilizer_n, marginal_return, total_cost_of_fertilizer_n, marginal_cost_of_fertilizer_n, estimated_investment_ratio))
-                                                                                                                                                                                                                    end
-                                                                                                                                                                                                                else
-                                                                                                                                                                                                                    if wue[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] == 0.0f0 && epsilon[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] == 0.0f0 && nminus1[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] == 0.0f0
-                                                                                                                                                                                                                        comments_ = "Yield response information is not available for either the legal land location or the combination of fertilizer management that you have chosen for your field in this scenario; please try with a different combination"
-                                                                                                                                                                                                                        write(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, soil_texture[inp_soil_texture], spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, crop_name[inp_current_crop], irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, n_source[inp_n_source], n_time[inp_n_time], n_place[inp_n_place], inp_soil_test_n, previous_crop[inp_prev_crop], inp_prev_crop_yld, previous_crop_yld_unit[inp_prev_crop_yld_unit], residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate, predicted_crop_yield, comments_))
-                                                                                                                                                                                                                    else
-                                                                                                                                                                                                                        write(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, soil_texture[inp_soil_texture], spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, crop_name[inp_current_crop], irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, n_source[inp_n_source], n_time[inp_n_time], n_place[inp_n_place], inp_soil_test_n, previous_crop[inp_prev_crop], inp_prev_crop_yld, previous_crop_yld_unit[inp_prev_crop_yld_unit], residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate, predicted_crop_yield))
-                                                                                                                                                                                                                    end
-                                                                                                                                                                                                                end
-                                                                                                                                                                                                            end
-                                                                                                                                                                                                        else
-                                                                                                                                                                                                            if n_rate == low_n_rate
-                                                                                                                                                                                                                if wue[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] == 0.0f0 && epsilon[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] == 0.0f0 && nminus1[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop] == 0.0f0
-                                                                                                                                                                                                                    comments_ = "Yield response information is not available for either the legal land location or the combination of fertilizer management that you have chosen for your field in this scenario; please try with a different combination"
-                                                                                                                                                                                                                    write(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, soil_texture[inp_soil_texture], spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, crop_name[inp_current_crop], irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, n_source[inp_n_source], n_time[inp_n_time], n_place[inp_n_place], inp_soil_test_n, previous_crop[inp_prev_crop], inp_prev_crop_yld, previous_crop_yld_unit[inp_prev_crop_yld_unit], residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate, predicted_crop_yield, comments_))
-                                                                                                                                                                                                                else
-                                                                                                                                                                                                                    write(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, soil_texture[inp_soil_texture], spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, crop_name[inp_current_crop], irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, n_source[inp_n_source], n_time[inp_n_time], n_place[inp_n_place], inp_soil_test_n, previous_crop[inp_prev_crop], inp_prev_crop_yld, previous_crop_yld_unit[inp_prev_crop_yld_unit], residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate, predicted_crop_yield))
-                                                                                                                                                                                                                end
-                                                                                                                                                                                                            end
-                                                                                                                                                                                                        end
-                                                                                                                                                                                                        close(write_f)
-                                                                                                                                                                                                    end
-                                                                                                                                                                                                end
-                                                                                                                                                                                            end
-                                                                                                                                                                                            fetch(investment_ratio_par)
-                                                                                                                                                                                        end
-                                                                                                                                                                                    end
-                                                                                                                                                                                end
-                                                                                                                                                                                fetch(fertilizer_price_par)
-                                                                                                                                                                            end
-                                                                                                                                                                        end
-                                                                                                                                                                    end
-                                                                                                                                                                    fetch(crop_price_par)
-                                                                                                                                                                end
-                                                                                                                                                            end
-                                                                                                                                                        end
-                                                                                                                                                        fetch(n_place_par)
-                                                                                                                                                    end
-                                                                                                                                                end
-                                                                                                                                            end
-                                                                                                                                            fetch(n_time_par)
-                                                                                                                                        end
-                                                                                                                                    end
-                                                                                                                                end
-                                                                                                                                fetch(manure_n_par)
-                                                                                                                            end
-                                                                                                                        end
-                                                                                                                    end
-                                                                                                                    fetch(soil_test_n_par)
-                                                                                                                end
-                                                                                                            end
-                                                                                                        end
-                                                                                                        fetch(res_mgmt_flg_par)
-                                                                                                    end
-                                                                                                end
-                                                                                            end
-                                                                                            fetch(prev_crop_yld_par)
-                                                                                        end
-                                                                                    end
-                                                                                end
-                                                                                fetch(som_par)
-                                                                            end
-                                                                        end
+
+                for inp_soil_texture in inp_soil_texture, inp_spring_soil_moisture in inp_spring_soil_moisture
+                    spring_soil_water_content = spring_soil_moisture[inp_spring_soil_moisture, inp_soil_texture]
+                    growing_season_precip_list = growing_season_precip
+                    for growing_season_precip in growing_season_precip
+                        total_plant_available_moisture = growing_season_precip + spring_soil_water_content
+                        growing_season_precip_id = findall(q -> q == growing_season_precip, growing_season_precip_list)
+                        growing_season_precip_flag_ = growing_season_precip_flag[growing_season_precip_id]
+                        for inp_soil_ph in inp_soil_ph
+                            soil_ph = min(phmax[inp_current_crop], max(phmin[inp_current_crop], inp_soil_ph))
+                            ph_adjust = max(0.0f0, min(1.0f0, b0ph[inp_current_crop] + b1ph[inp_current_crop] * soil_ph + b2ph[inp_current_crop] * soil_ph ^ 2.0f0))
+                            # pH warning message when crop yield starts being affected by soil pH
+                            if ph_adjust < 0.9f0
+                                row_number = line_count + 1
+                                msg = "Crop yield is severely affected by adverse soil pH. This warning is for the scenario at row $row_number of your input file."
+                                println(logf_, writeoutputs("Warning: $msg"))
+                                Base.printstyled("\nWarning: ", color = :yellow, bold = true)
+                                print(msg, "\n")
+                            elseif ph_adjust < 0.75f0
+                                row_number = line_count + 1
+                                msg = "Crop yield is severely affected by adverse soil pH. This warning is for the scenario at row $row_number of your input file."
+                                println(logf_, writeoutputs("Warning: $msg"))
+                                Base.printstyled("\nWarning: ", color = :yellow, bold = true)
+                                print(msg, "\n")
+                            end
+                            for inp_soil_ec in inp_soil_ec
+                                ec_adjust = max(0.0f0, min(1.0f0, b0ec[inp_current_crop] + b1ec[inp_current_crop] * inp_soil_ec))
+                                # Salinity warning message when crop yield starts being affected by soil pH
+                                if ec_adjust < 0.9f0
+                                    row_number = line_count + 1
+                                    msg = "Crop yield is moderately affected by soil salinity. This warning is for the scenario at row $row_number of your input file."
+                                    println(logf_, writeoutputs("Warning: $msg"))
+                                    Base.printstyled("\nWarning: ", color = :yellow, bold = true)
+                                    print(msg, "\n")
+                                elseif ec_adjust < 0.75f0
+                                    row_number = line_count + 1
+                                    msg = "Crop yield is severely affected by soil salinity. This warning is for the scenario at row $row_number of your input file."
+                                    println(logf_, writeoutputs("Warning: $msg"))
+                                    Base.printstyled("\nWarning: ", color = :yellow, bold = true)
+                                    print(msg, "\n")
+                                end
+                                for inp_som in inp_som
+                                    enr = round((20.6f0 + 13.2f0 * inp_som - 0.1777f0 * inp_som ^ 2.0f0) / kg_ha_n_lb_ac, digits = 1)
+                                    for inp_prev_crop_yld in inp_prev_crop_yld, inp_res_mgmt_flg in inp_res_mgmt_flg
+                                        residue_n_credit = round(inp_prev_crop_yld * (residue_management_multiplyer[inp_res_mgmt_flg] * b0ag[inp_prev_crop, inp_prev_crop_yld_unit] + b0bg[inp_prev_crop, inp_prev_crop_yld_unit]), digits = 0)
+                                        for inp_soil_test_n in inp_soil_test_n, inp_manure_n in inp_manure_n
+                                            plant_available_soil_n = round(enr + residue_n_credit + inp_soil_test_n + inp_manure_n, digits = 0)
+                                            for inp_n_time in inp_n_time, inp_n_place in inp_n_place, inp_crop_price in inp_crop_price, inp_fertilizer_price in inp_fertilizer_price, inp_investment_ratio in inp_investment_ratio
+                                                WUE = wue[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop]
+                                                ϵ = epsilon[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop]
+                                                NMINUS1 = nminus1[inp_n_place, inp_n_time, inp_n_source, soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop]
+                                                if WUE == 0.0f0 && ϵ == 0.0f0 && NMINUS1 == 0.0f0
+                                                    set_calculation_flag = 1
+                                                    comments_ = "Yield response information is not available for either the legal land location or the combination of fertilizer management that you have chosen for your field in this scenario; please try with a different combination"
+                                                    println(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, soil_texture[inp_soil_texture], spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, crop_name[inp_current_crop], irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, n_source[inp_n_source], n_time[inp_n_time], n_place[inp_n_place], inp_soil_test_n, previous_crop[inp_prev_crop], inp_prev_crop_yld, previous_crop_yld_unit[inp_prev_crop_yld_unit], residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, comments_))
+                                                    continue
+                                                else
+                                                    set_calculation_flag = 0                                                    
+                                                    high_n_rate = ns_max - plant_available_soil_n
+                                                    if high_n_rate % n_rate_step_size > 0.0f0
+                                                        high_n_rate = n_rate_step_size * (1.0f0 + high_n_rate ÷ 10.0f0)
+                                                    end
+                                                    n_rate_list = low_n_rate:n_rate_step_size:high_n_rate
+                                                    n_rate_list = SArray{Tuple{size(n_rate_list)...}, eltype(n_rate_list)}(n_rate_list)
+                                                    # initialize arrays for subsequent calculations
+                                                    max_n_rate_id = length(n_rate_list)
+                                                    predicted_crop_yield = MArray{Tuple{max_n_rate_id,}, Float32}(zeros(max_n_rate_id))
+                                                    added_yield_increase = MArray{Tuple{max_n_rate_id,}, Float32}(zeros(max_n_rate_id))
+                                                    predicted_yield_increase = MArray{Tuple{max_n_rate_id,}, Float32}(zeros(max_n_rate_id))
+                                                    total_cost_of_fertilizer_n = MArray{Tuple{max_n_rate_id,}, Float32}(zeros(max_n_rate_id))
+                                                    marginal_cost_of_fertilizer_n = MArray{Tuple{max_n_rate_id,}, Float32}(zeros(max_n_rate_id))
+                                                    estimated_revenue_from_fertilizer_n = MArray{Tuple{max_n_rate_id,}, Float32}(zeros(max_n_rate_id))
+                                                    marginal_return = MArray{Tuple{max_n_rate_id,}, Float32}(zeros(max_n_rate_id))
+                                                    estimated_investment_ratio = MArray{Tuple{max_n_rate_id,}, Float32}(zeros(max_n_rate_id))
+                                                end
+                                                if set_calculation_flag == 0
+                                                    @turbo thread = 20 for i in eachindex(n_rate_list)
+                                                        n_rate = n_rate_list[i]
+                                                        n_rate_id = 1 + floor(Int64, n_rate / n_rate_step_size)
+                                                        plant_available_total_n = plant_available_soil_n + n_rate
+                                                        predicted_crop_yield[n_rate_id] = ph_adjust * ec_adjust * conv_yld_kgha_buac * WUE * total_plant_available_moisture * (1.0f0 - 10.0f0 ^ (- ϵ * plant_available_total_n * kg_ha_n_lb_ac * (WUE * total_plant_available_moisture) ^ NMINUS1))
+                                                        total_cost_of_fertilizer_n[n_rate_id] = n_rate * inp_fertilizer_price / 1000.0f0 * 0.4536f0 / (n_source_percent_n[inp_n_source] / 100.0f0)
+                                                    end
+                                                    @turbo thread = 20 for i in 2:length(n_rate_list)
+                                                        n_rate = n_rate_list[i]
+                                                        n_rate_id = floor(Int64, n_rate / n_rate_step_size)
+                                                        n_rate_id_prev = n_rate_id - 1
+                                                        added_yield_increase[n_rate_id] = predicted_crop_yield[n_rate_id] - predicted_crop_yield[n_rate_id_prev]
+                                                        marginal_cost_of_fertilizer_n[n_rate_id] = total_cost_of_fertilizer_n[n_rate_id] - total_cost_of_fertilizer_n[n_rate_id_prev]
+                                                    end
+                                                    @fastmath @inbounds @simd for i in 2:length(n_rate_list)
+                                                        n_rate = n_rate_list[i]
+                                                        n_rate_id = floor(Int64, n_rate / n_rate_step_size)
+                                                        sum_ids = n_rate_id:-1:2
+                                                        predicted_yield_increase[n_rate_id] = sum(added_yield_increase[sum_ids])
+                                                    end
+                                                    @turbo thread = 20 for i in 2:length(n_rate_list)
+                                                        n_rate = n_rate_list[i]
+                                                        n_rate_id = floor(Int64, n_rate / n_rate_step_size)
+                                                        n_rate_id_prev = n_rate_id - 1
+                                                        estimated_revenue_from_fertilizer_n[n_rate_id] = predicted_yield_increase[n_rate_id] * inp_crop_price
+                                                        marginal_return[n_rate_id] = (predicted_yield_increase[n_rate_id] - predicted_yield_increase[n_rate_id_prev]) * inp_crop_price
+                                                        estimated_investment_ratio[n_rate_id] = marginal_return[n_rate_id] / marginal_cost_of_fertilizer_n[n_rate_id]
+                                                    end
+                                                    @fastmath @inbounds @simd for i in eachindex(n_rate_list)
+                                                        predicted_crop_yield[i] = round(predicted_crop_yield[i], digits = 1)
+                                                        added_yield_increase[i] = round(added_yield_increase[i], digits = 1)
+                                                        predicted_yield_increase[i] = round(predicted_yield_increase[i], digits = 1)
+                                                        total_cost_of_fertilizer_n[i] = round(total_cost_of_fertilizer_n[i], digits = 2)
+                                                        marginal_cost_of_fertilizer_n[i] = round(marginal_cost_of_fertilizer_n[i], digits = 2)
+                                                        estimated_revenue_from_fertilizer_n[i] = round(estimated_revenue_from_fertilizer_n[i], digits = 2)
+                                                        marginal_return[i] = round(marginal_return[i], digits = 2)
+                                                        estimated_investment_ratio[i] = round(estimated_investment_ratio[i], digits = 1)
+                                                    end
+                                                end
+                                                recommend_flag_set = 0
+                                                recommend_flag = ""
+                                                if set_calculation_flag == 0 
+                                                    for i in eachindex(n_rate_list)
+                                                        if recommend_flag_set == 0 
+                                                            if i > 1
+                                                                if estimated_investment_ratio[i] <= inp_investment_ratio && estimated_investment_ratio[i - 1] > inp_investment_ratio
+                                                                    recommend_flag = "Yes"
+                                                                    recommend_flag_set = 1
+                                                                elseif estimated_investment_ratio[i] == inp_investment_ratio
+                                                                    recommend_flag = "Yes"
+                                                                    recommend_flag_set = 1
+                                                                else
+                                                                    recommend_flag = ""
+                                                                end
+                                                            else
+                                                                recommend_flag = "" 
+                                                            end
+                                                        else
+                                                            recommend_flag = ""
+                                                        end
+                                                        lock(write_f)
+                                                        try
+                                                            if added_yield_increase[i] >= 0.5f0
+                                                                if i > 1
+                                                                    if recommend_flag == "Yes"
+                                                                        println(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, soil_texture[inp_soil_texture], spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, crop_name[inp_current_crop], irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, n_source[inp_n_source], n_time[inp_n_time], n_place[inp_n_place], inp_soil_test_n, previous_crop[inp_prev_crop], inp_prev_crop_yld, previous_crop_yld_unit[inp_prev_crop_yld_unit], residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate_list[i], predicted_crop_yield[i], predicted_yield_increase[i], added_yield_increase[i], estimated_revenue_from_fertilizer_n[i], marginal_return[i], total_cost_of_fertilizer_n[i], marginal_cost_of_fertilizer_n[i], estimated_investment_ratio[i], recommend_flag))
+                                                                    else
+                                                                        println(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, soil_texture[inp_soil_texture], spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, crop_name[inp_current_crop], irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, n_source[inp_n_source], n_time[inp_n_time], n_place[inp_n_place], inp_soil_test_n, previous_crop[inp_prev_crop], inp_prev_crop_yld, previous_crop_yld_unit[inp_prev_crop_yld_unit], residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate_list[i], predicted_crop_yield[i], predicted_yield_increase[i], added_yield_increase[i], estimated_revenue_from_fertilizer_n[i], marginal_return[i], total_cost_of_fertilizer_n[i], marginal_cost_of_fertilizer_n[i], estimated_investment_ratio[i]))
                                                                     end
-                                                                    fetch(soil_ec_par)
+                                                                else
+                                                                    println(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, soil_texture[inp_soil_texture], spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, crop_name[inp_current_crop], irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, n_source[inp_n_source], n_time[inp_n_time], n_place[inp_n_place], inp_soil_test_n, previous_crop[inp_prev_crop], inp_prev_crop_yld, previous_crop_yld_unit[inp_prev_crop_yld_unit], residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate_list[i], predicted_crop_yield[i]))
                                                                 end
                                                             end
+                                                        finally
+                                                            unlock(write_f)
                                                         end
-                                                        fetch(soil_ph_par)
                                                     end
                                                 end
                                             end
-                                            fetch(growing_season_precip_par)
                                         end
                                     end
                                 end
-                                fetch(spring_moisture_par)
                             end
                         end
                     end
-                    fetch(soil_texture_par)
                 end
             else
                 row_number = line_count + 1
                 msg = "Legal land location is not valid for the scenario at row $row_number of your input file. No output was written for this scenario."
-                write(logf_, writeoutputs("Error: $msg"))
+                println(logf_, writeoutputs("Error: $msg"))
                 Base.printstyled("\nError: ", color = :red, bold = true)
                 print(msg, "\n")   
             end
         catch
             row_number = line_count + 1
             msg = "The inputs are not valid for the scenario at row $row_number of your input file. No output was written for this scenario."
-            write(logf_, writeoutputs("Error: $msg"))
+            println(logf_, writeoutputs("Error: $msg"))
             Base.printstyled("\nError: ", color = :red, bold = true)
             print(msg, "\n")
             continue
@@ -379,7 +332,7 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
     Please check out the model outputs in the output folder. 
     Also check out the AFFIRM-batch-logfile in the output folder for any important message. 
     Thank you for using AFFIRM.jl!!"
-    write(logf_, writeoutputs("Success: $msg"))
+        println(logf_, writeoutputs("Success: $msg"))
     Base.printstyled("\nCompleted ", color = :green, bold = true)
     print("AFFIRM.jl batch runs...")
     Base.printstyled("\nInfo: ", color = :blue, bold = true)
