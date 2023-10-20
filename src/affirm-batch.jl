@@ -327,7 +327,7 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
     Please check out the model outputs in the output folder. 
     Also check out the AFFIRM-batch-logfile in the output folder for any important message. 
     Thank you for using AFFIRM.jl!!"
-        println(logf_, writeoutputs("Success: $msg"))
+    println(logf_, writeoutputs("Success: $msg"))
     Base.printstyled("\nCompleted ", color = :green, bold = true)
     print("AFFIRM.jl batch runs...")
     Base.printstyled("\nInfo: ", color = :blue, bold = true)
