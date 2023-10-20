@@ -177,7 +177,7 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
                             end
                             for inp_soil_ec in inp_soil_ec
                                 ec_adjust = max(0.0f0, min(1.0f0, b0ec[inp_current_crop] + b1ec[inp_current_crop] * inp_soil_ec))
-                                # Salinity warning message when crop yield starts being affected by soil pH
+                                # Salinity warning message when crop yield starts being affected by soil salinity measured as soil EC
                                 if ec_adjust < 0.9f0
                                     row_number = line_count + 1
                                     msg = "Crop yield is moderately affected by soil salinity. This warning is for the scenario at row $row_number of your input file."
