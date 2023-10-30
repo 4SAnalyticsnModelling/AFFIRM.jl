@@ -247,7 +247,7 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
                                                     end
                                                     recommend_flag_set :: Int64 = 0
                                                     recommend_flag :: String = ""
-                                                    for i in eachindex(n_rate_list)
+                                                    for i in 1:length(n_rate_list)
                                                         if recommend_flag_set == 0 
                                                             if i > 2 && estimated_investment_ratio[i] <= inp_investment_ratio && estimated_investment_ratio[i - 1] > inp_investment_ratio
                                                                     recommend_flag = "Yes"
