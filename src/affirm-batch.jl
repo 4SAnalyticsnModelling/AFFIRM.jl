@@ -249,18 +249,14 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
                                                     recommend_flag :: String = ""
                                                     for i in eachindex(n_rate_list)
                                                         if recommend_flag_set == 0 
-                                                            if i > 1
-                                                                if estimated_investment_ratio[i] <= inp_investment_ratio && estimated_investment_ratio[i - 1] > inp_investment_ratio
+                                                            if i > 2 && estimated_investment_ratio[i] <= inp_investment_ratio && estimated_investment_ratio[i - 1] > inp_investment_ratio
                                                                     recommend_flag = "Yes"
                                                                     recommend_flag_set = 1
-                                                                elseif estimated_investment_ratio[i] == inp_investment_ratio
+                                                            elseif i == 2 && estimated_investment_ratio[i] == inp_investment_ratio
                                                                     recommend_flag = "Yes"
                                                                     recommend_flag_set = 1
-                                                                else
-                                                                    recommend_flag = ""
-                                                                end
                                                             else
-                                                                recommend_flag = "" 
+                                                                recommend_flag = ""
                                                             end
                                                         else
                                                             recommend_flag = ""
