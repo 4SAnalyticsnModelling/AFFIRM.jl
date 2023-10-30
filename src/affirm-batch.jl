@@ -207,7 +207,7 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
                                                     estimated_revenue_from_fertilizer_n :: Vector{Float32} = zeros(Float32, max_n_rate_id)
                                                     marginal_return :: Vector{Float32} = zeros(Float32, max_n_rate_id)
                                                     estimated_investment_ratio :: Vector{Float32} = zeros(Float32, max_n_rate_id)
-                                                    @tturbo for i in eachindex(n_rate_list)
+                                                    @tturbo for i in 1:length(n_rate_list)
                                                         n_rate = n_rate_list[i]
                                                         n_rate_id = 1 + floor(Int64, n_rate / n_rate_step_size)
                                                         plant_available_total_n = plant_available_soil_n + n_rate
@@ -235,7 +235,7 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
                                                         marginal_return[n_rate_id] = (predicted_yield_increase[n_rate_id] - predicted_yield_increase[n_rate_id_prev]) * inp_crop_price
                                                         estimated_investment_ratio[n_rate_id] = marginal_return[n_rate_id] / marginal_cost_of_fertilizer_n[n_rate_id]
                                                     end
-                                                    @fastmath @inbounds Threads.@threads for i in eachindex(n_rate_list)
+                                                    @fastmath @inbounds Threads.@threads for i in 1:length(n_rate_list)
                                                         predicted_crop_yield[i] = round(predicted_crop_yield[i], digits = 1)
                                                         added_yield_increase[i] = round(added_yield_increase[i], digits = 1)
                                                         predicted_yield_increase[i] = round(predicted_yield_increase[i], digits = 1)
