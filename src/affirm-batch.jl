@@ -183,11 +183,12 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
                                         residue_n_credit = round(inp_prev_crop_yld * (residue_management_multiplyer[inp_res_mgmt_flg] * affirm_coeffs.b0ag[inp_prev_crop, inp_prev_crop_yld_unit] + affirm_coeffs.b0bg[inp_prev_crop, inp_prev_crop_yld_unit]), digits = 0)
                                         for inp_soil_test_n in inp_soil_test_n, inp_manure_n in inp_manure_n
                                             plant_available_soil_n = round(enr + residue_n_credit + inp_soil_test_n + inp_manure_n, digits = 0)
+                                            set_calculation_flag :: Int64 = 0
                                             for inp_n_time in inp_n_time, inp_n_place in inp_n_place, inp_crop_price in inp_crop_price, inp_fertilizer_price in inp_fertilizer_price, inp_investment_ratio in inp_investment_ratio
                                                 WUE = affirm_coeffs.wue[inp_n_place, inp_n_time, inp_n_source, affirm_coeffs.soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop]
                                                 ϵ = affirm_coeffs.epsilon[inp_n_place, inp_n_time, inp_n_source, affirm_coeffs.soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop]
                                                 NMINUS1 = affirm_coeffs.nminus1[inp_n_place, inp_n_time, inp_n_source, affirm_coeffs.soil_zone_id[inp_township, inp_range, inp_meridian], inp_current_crop]
-                                                if WUE == 0.0f0 && ϵ == 0.0f0 && NMINUS1 == 0.0f0
+                                                if set_calculation_flag == 0 && WUE == 0.0f0 && ϵ == 0.0f0 && NMINUS1 == 0.0f0
                                                     set_calculation_flag = 1
                                                     comments_ = "Yield response information is not available for either the legal land location or the combination of fertilizer management that you have chosen for your field in this scenario; please try with a different combination"
                                                     println(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, affirm_coeffs.soil_texture[inp_soil_texture], affirm_coeffs.spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, affirm_coeffs.crop_name[inp_current_crop], affirm_coeffs.irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, affirm_coeffs.n_source[inp_n_source], affirm_coeffs.n_time[inp_n_time], affirm_coeffs.n_place[inp_n_place], inp_soil_test_n, affirm_coeffs.previous_crop[inp_prev_crop], inp_prev_crop_yld, affirm_coeffs.previous_crop_yld_unit[inp_prev_crop_yld_unit], affirm_coeffs.residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, comments_))
@@ -248,8 +249,8 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
                                                         estimated_investment_ratio[i] = round(estimated_investment_ratio[i], digits = 1)
                                                     end
                                                 end
-                                                recommend_flag_set = 0
-                                                recommend_flag = ""
+                                                recommend_flag_set :: Int64 = 0
+                                                recommend_flag :: String = ""
                                                 if set_calculation_flag == 0 
                                                     for i in eachindex(n_rate_list)
                                                         if recommend_flag_set == 0 
