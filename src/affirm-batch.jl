@@ -194,7 +194,7 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
                                                     println(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, affirm_coeffs.soil_texture[inp_soil_texture], affirm_coeffs.spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, affirm_coeffs.crop_name[inp_current_crop], affirm_coeffs.irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, affirm_coeffs.n_source[inp_n_source], affirm_coeffs.n_time[inp_n_time], affirm_coeffs.n_place[inp_n_place], inp_soil_test_n, affirm_coeffs.previous_crop[inp_prev_crop], inp_prev_crop_yld, affirm_coeffs.previous_crop_yld_unit[inp_prev_crop_yld_unit], affirm_coeffs.residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, comments_))
                                                     continue
                                                 else
-                                                    set_calculation_flag = 0                                                    
+                                                    # set_calculation_flag = 0                                                    
                                                     high_n_rate = ns_max - plant_available_soil_n
                                                     high_n_rate = high_n_rate % n_rate_step_size > 0.0f0 && n_rate_step_size * (1.0f0 + high_n_rate ÷ 10.0f0)
                                                     n_rate_list :: Vector{Float32} = collect(low_n_rate:n_rate_step_size:high_n_rate)
@@ -208,8 +208,8 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
                                                     estimated_revenue_from_fertilizer_n :: Vector{Float32} = zeros(Float32, max_n_rate_id)
                                                     marginal_return :: Vector{Float32} = zeros(Float32, max_n_rate_id)
                                                     estimated_investment_ratio :: Vector{Float32} = zeros(Float32, max_n_rate_id)
-                                                end
-                                                if set_calculation_flag == 0
+                                                # end
+                                                # if set_calculation_flag == 0
                                                     @tturbo for i in eachindex(n_rate_list)
                                                         n_rate = n_rate_list[i]
                                                         n_rate_id = 1 + floor(Int64, n_rate / n_rate_step_size)
@@ -248,41 +248,42 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
                                                         marginal_return[i] = round(marginal_return[i], digits = 2)
                                                         estimated_investment_ratio[i] = round(estimated_investment_ratio[i], digits = 1)
                                                     end
-                                                end
-                                                recommend_flag_set :: Int64 = 0
-                                                recommend_flag :: String = ""
-                                                if set_calculation_flag == 0 
-                                                    for i in eachindex(n_rate_list)
-                                                        if recommend_flag_set == 0 
-                                                            if i > 1
-                                                                if estimated_investment_ratio[i] <= inp_investment_ratio && estimated_investment_ratio[i - 1] > inp_investment_ratio
-                                                                    recommend_flag = "Yes"
-                                                                    recommend_flag_set = 1
-                                                                elseif estimated_investment_ratio[i] == inp_investment_ratio
-                                                                    recommend_flag = "Yes"
-                                                                    recommend_flag_set = 1
+                                                # end
+                                                    recommend_flag_set :: Int64 = 0
+                                                    recommend_flag :: String = ""
+                                                    # if set_calculation_flag == 0 
+                                                        for i in eachindex(n_rate_list)
+                                                            if recommend_flag_set == 0 
+                                                                if i > 1
+                                                                    if estimated_investment_ratio[i] <= inp_investment_ratio && estimated_investment_ratio[i - 1] > inp_investment_ratio
+                                                                        recommend_flag = "Yes"
+                                                                        recommend_flag_set = 1
+                                                                    elseif estimated_investment_ratio[i] == inp_investment_ratio
+                                                                        recommend_flag = "Yes"
+                                                                        recommend_flag_set = 1
+                                                                    else
+                                                                        recommend_flag = ""
+                                                                    end
                                                                 else
-                                                                    recommend_flag = ""
+                                                                    recommend_flag = "" 
                                                                 end
                                                             else
-                                                                recommend_flag = "" 
+                                                                recommend_flag = ""
                                                             end
-                                                        else
-                                                            recommend_flag = ""
-                                                        end
-                                                        if added_yield_increase[i] >= 0.5f0
-                                                            if i > 1
-                                                                if recommend_flag == "Yes"
-                                                                    println(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, affirm_coeffs.soil_texture[inp_soil_texture], affirm_coeffs.spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, affirm_coeffs.crop_name[inp_current_crop], affirm_coeffs.irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, affirm_coeffs.n_source[inp_n_source], affirm_coeffs.n_time[inp_n_time], affirm_coeffs.n_place[inp_n_place], inp_soil_test_n, affirm_coeffs.previous_crop[inp_prev_crop], inp_prev_crop_yld, affirm_coeffs.previous_crop_yld_unit[inp_prev_crop_yld_unit], affirm_coeffs.residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate_list[i], predicted_crop_yield[i], predicted_yield_increase[i], added_yield_increase[i], estimated_revenue_from_fertilizer_n[i], marginal_return[i], total_cost_of_fertilizer_n[i], marginal_cost_of_fertilizer_n[i], estimated_investment_ratio[i], recommend_flag))
+                                                            if added_yield_increase[i] >= 0.5f0
+                                                                if i > 1
+                                                                    if recommend_flag == "Yes"
+                                                                        println(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, affirm_coeffs.soil_texture[inp_soil_texture], affirm_coeffs.spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, affirm_coeffs.crop_name[inp_current_crop], affirm_coeffs.irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, affirm_coeffs.n_source[inp_n_source], affirm_coeffs.n_time[inp_n_time], affirm_coeffs.n_place[inp_n_place], inp_soil_test_n, affirm_coeffs.previous_crop[inp_prev_crop], inp_prev_crop_yld, affirm_coeffs.previous_crop_yld_unit[inp_prev_crop_yld_unit], affirm_coeffs.residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate_list[i], predicted_crop_yield[i], predicted_yield_increase[i], added_yield_increase[i], estimated_revenue_from_fertilizer_n[i], marginal_return[i], total_cost_of_fertilizer_n[i], marginal_cost_of_fertilizer_n[i], estimated_investment_ratio[i], recommend_flag))
+                                                                    else
+                                                                        println(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, affirm_coeffs.soil_texture[inp_soil_texture], affirm_coeffs.spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, affirm_coeffs.crop_name[inp_current_crop], affirm_coeffs.irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, affirm_coeffs.n_source[inp_n_source], affirm_coeffs.n_time[inp_n_time], affirm_coeffs.n_place[inp_n_place], inp_soil_test_n, affirm_coeffs.previous_crop[inp_prev_crop], inp_prev_crop_yld, affirm_coeffs.previous_crop_yld_unit[inp_prev_crop_yld_unit], affirm_coeffs.residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate_list[i], predicted_crop_yield[i], predicted_yield_increase[i], added_yield_increase[i], estimated_revenue_from_fertilizer_n[i], marginal_return[i], total_cost_of_fertilizer_n[i], marginal_cost_of_fertilizer_n[i], estimated_investment_ratio[i]))
+                                                                    end
                                                                 else
-                                                                    println(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, affirm_coeffs.soil_texture[inp_soil_texture], affirm_coeffs.spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, affirm_coeffs.crop_name[inp_current_crop], affirm_coeffs.irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, affirm_coeffs.n_source[inp_n_source], affirm_coeffs.n_time[inp_n_time], affirm_coeffs.n_place[inp_n_place], inp_soil_test_n, affirm_coeffs.previous_crop[inp_prev_crop], inp_prev_crop_yld, affirm_coeffs.previous_crop_yld_unit[inp_prev_crop_yld_unit], affirm_coeffs.residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate_list[i], predicted_crop_yield[i], predicted_yield_increase[i], added_yield_increase[i], estimated_revenue_from_fertilizer_n[i], marginal_return[i], total_cost_of_fertilizer_n[i], marginal_cost_of_fertilizer_n[i], estimated_investment_ratio[i]))
+                                                                    println(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, affirm_coeffs.soil_texture[inp_soil_texture], affirm_coeffs.spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, affirm_coeffs.crop_name[inp_current_crop], affirm_coeffs.irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, affirm_coeffs.n_source[inp_n_source], affirm_coeffs.n_time[inp_n_time], affirm_coeffs.n_place[inp_n_place], inp_soil_test_n, affirm_coeffs.previous_crop[inp_prev_crop], inp_prev_crop_yld, affirm_coeffs.previous_crop_yld_unit[inp_prev_crop_yld_unit], affirm_coeffs.residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate_list[i], predicted_crop_yield[i]))
                                                                 end
-                                                            else
-                                                                println(write_f, writeoutputs(inp_index, inp_township, inp_range, inp_meridian_, soil_zone_, inp_som, affirm_coeffs.soil_texture[inp_soil_texture], affirm_coeffs.spring_moisture_condition[inp_spring_soil_moisture], inp_soil_ph, inp_soil_ec, affirm_coeffs.crop_name[inp_current_crop], affirm_coeffs.irrigation_flag[inp_irrig_flg], growing_season_precip_flag_, growing_season_precip, affirm_coeffs.n_source[inp_n_source], affirm_coeffs.n_time[inp_n_time], affirm_coeffs.n_place[inp_n_place], inp_soil_test_n, affirm_coeffs.previous_crop[inp_prev_crop], inp_prev_crop_yld, affirm_coeffs.previous_crop_yld_unit[inp_prev_crop_yld_unit], affirm_coeffs.residue_management[inp_res_mgmt_flg], inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio, enr, residue_n_credit, plant_available_soil_n, n_rate_list[i], predicted_crop_yield[i]))
                                                             end
                                                         end
                                                     end
-                                                end
+                                                # end
                                             end
                                         end
                                     end
