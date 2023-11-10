@@ -103,18 +103,15 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
             inp_prev_crop_yld_unit = parse(Int, line[20]) 
             inp_res_mgmt_flg = get_combined_simulation(line[21])
             inp_manure_n, inp_crop_price, inp_fertilizer_price, inp_investment_ratio = get_distribution.(line[22:25])   
+            growing_season_precip = Vector{Float32}([])
+            growing_season_precip_flag = Vector{String}([])
 
             if inp_township in axes(affirm_coeffs.soil_zone_id, 1) && inp_range in axes(affirm_coeffs.soil_zone_id, 2) && inp_meridian in axes(affirm_coeffs.soil_zone_id, 3) && affirm_coeffs.soil_zone_id[inp_township, inp_range, inp_meridian] > 0
                 soil_zone_ = affirm_coeffs.soil_zone[affirm_coeffs.soil_zone_id[inp_township, inp_range, inp_meridian]]
-
                 if inp_irrig_flg == 1 # no irrigation / dryland
                     growing_season_precip_optimum_moisture = round(affirm_coeffs.b0precip[inp_township, inp_range, inp_meridian] - 10.0f0 * affirm_coeffs.b1precip[inp_township, inp_range, inp_meridian], digits = 0)
                     growing_season_precip_intermediate_moisture = round(affirm_coeffs.b0precip[inp_township, inp_range, inp_meridian] - 50.0f0 * affirm_coeffs.b1precip[inp_township, inp_range, inp_meridian], digits = 0)
                     growing_season_precip_low_moisture = round(affirm_coeffs.b0precip[inp_township, inp_range, inp_meridian] - 90.0f0 * affirm_coeffs.b1precip[inp_township, inp_range, inp_meridian], digits = 0)
-                    
-                    growing_season_precip = Vector{Float32}([])
-                    growing_season_precip_flag = Vector{String}([])
-
                     if sum(inp_my_precip) > 0.0f0
                         growing_season_precip = vcat(growing_season_precip, inp_my_precip, [growing_season_precip_low_moisture, growing_season_precip_intermediate_moisture, growing_season_precip_optimum_moisture])
                         growing_season_precip_flag = vcat(growing_season_precip_flag, ["Growing season precipitation - User input" for _ in 1:length(inp_my_precip)], ["Growing season precipitation - Low moisture condition", "Growing season precipitation - Intermediate moisture condition", "Growing season precipitation - Optimum moisture condition"])
@@ -128,10 +125,10 @@ function run_affirm(input_file_path :: String = "../input/AFFIRM-batch-inputs.cs
                     growing_season_precip_low_moisture = round(b0irrig - 90.0f0 * b1irrig, digits = 0)
                     if sum(inp_my_irrig) > 0.0f0
                         growing_season_precip = vcat(growing_season_precip, inp_my_irrig, [growing_season_precip_low_moisture, growing_season_precip_intermediate_moisture, growing_season_precip_optimum_moisture])
-                        growing_season_precip_flag = vcat(growing_season_precip_flag, ["Irrigation water amount - User input" for _ in 1:length(inp_my_irrig)], ["Irrigation water amount - Low moisture condition", "Irrigation water amount - Intermediate moisture condition", "Irrigation water amount - Optimum moisture condition"])
+                        growing_season_precip_flag = vcat(growing_season_precip_flag, ["Irrigation water amount - User input" for _ in 1:length(inp_my_irrig)], ["Irrigation water amount - Low irrigation level", "Irrigation water amount - Intermediate irrigation level", "Irrigation water amount - Optimum irrigation level"])
                     else
                         growing_season_precip = vcat(growing_season_precip, [growing_season_precip_low_moisture, growing_season_precip_intermediate_moisture, growing_season_precip_optimum_moisture])
-                        growing_season_precip_flag = vcat(growing_season_precip_flag, ["Irrigation water amount - Low moisture condition", "Irrigation water amount - Intermediate moisture condition", "Irrigation water amount - Optimum moisture condition"])
+                        growing_season_precip_flag = vcat(growing_season_precip_flag, ["Irrigation water amount - Low irrigation level", "Irrigation water amount - Intermediate irrigation level", "Irrigation water amount - Optimum irrigation level"])
                     end
                 end
 
